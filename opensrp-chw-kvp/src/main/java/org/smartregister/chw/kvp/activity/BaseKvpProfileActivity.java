@@ -213,12 +213,6 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewLocation.setText(memberObject.getAddress());
         textViewUniqueID.setText(memberObject.getUniqueId());
 
-        if (StringUtils.isNotBlank(memberObject.getFamilyHead()) && memberObject.getFamilyHead().equals(memberObject.getBaseEntityId())) {
-            findViewById(R.id.family_kvp_head).setVisibility(View.VISIBLE);
-        }
-        if (StringUtils.isNotBlank(memberObject.getPrimaryCareGiver()) && memberObject.getPrimaryCareGiver().equals(memberObject.getBaseEntityId())) {
-            findViewById(R.id.primary_kvp_caregiver).setVisibility(View.VISIBLE);
-        }
         if (memberObject.getKvpTestDate() != null) {
             textview_positive_date.setText(getString(R.string.kvp_positive) + " " + formatTime(memberObject.getKvpTestDate()));
         }
