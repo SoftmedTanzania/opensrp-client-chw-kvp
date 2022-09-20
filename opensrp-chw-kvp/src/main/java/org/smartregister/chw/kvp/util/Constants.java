@@ -13,7 +13,7 @@ public interface Constants {
     }
 
     interface EVENT_TYPE {
-        String KVP_CONFIRMATION = "Kvp Confirmation";
+        String KVP_PrEP_REGISTRATION = "KVP PrEP Registration";
         String KVP_FOLLOW_UP_VISIT = "Kvp Follow-up Visit";
     }
 
@@ -23,7 +23,9 @@ public interface Constants {
     }
 
     interface TABLES {
-        String KVP_CONFIRMATION = "ec_kvp_confirmation";
+        String KVP_PrEP_REGISTER = "ec_kvp_prep_register";
+        String KVP_REGISTER = "ec_kvp_register";
+        String PrEP_REGISTER = "ec_prep_register";
         String KVP_FOLLOW_UP = "ec_kvp_follow_up_visit";
     }
 

@@ -48,12 +48,12 @@ public class BaseKvpRegisterFragmentPresenterKvp {
 
     @Test
     public void getDefaultSortQuery() {
-        Assert.assertEquals(Constants.TABLES.KVP_CONFIRMATION + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ", baseKvpRegisterFragmentPresenter.getDefaultSortQuery());
+        Assert.assertEquals(Constants.TABLES.KVP_PrEP_REGISTER + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ", baseKvpRegisterFragmentPresenter.getDefaultSortQuery());
     }
 
     @Test
     public void getMainTable() {
-        Assert.assertEquals(Constants.TABLES.KVP_CONFIRMATION, baseKvpRegisterFragmentPresenter.getMainTable());
+        Assert.assertEquals(Constants.TABLES.KVP_PrEP_REGISTER, baseKvpRegisterFragmentPresenter.getMainTable());
     }
 
     @Test

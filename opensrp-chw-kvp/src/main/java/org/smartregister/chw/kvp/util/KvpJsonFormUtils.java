@@ -76,8 +76,8 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String entityId = getString(jsonForm, ENTITY_ID);
         String encounter_type = jsonForm.optString(Constants.JSON_FORM_EXTRA.ENCOUNTER_TYPE);
 
-        if (Constants.EVENT_TYPE.KVP_CONFIRMATION.equals(encounter_type)) {
-            encounter_type = Constants.TABLES.KVP_CONFIRMATION;
+        if (Constants.EVENT_TYPE.KVP_PrEP_REGISTRATION.equals(encounter_type)) {
+            encounter_type = Constants.TABLES.KVP_PrEP_REGISTER;
         } else if (Constants.EVENT_TYPE.KVP_FOLLOW_UP_VISIT.equals(encounter_type)) {
             encounter_type = Constants.TABLES.KVP_FOLLOW_UP;
         }
