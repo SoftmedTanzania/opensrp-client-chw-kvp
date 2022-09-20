@@ -36,15 +36,15 @@ public class KvpLibrary {
     private String sourceDateFormat = "dd-MM-yyyy";
     private String saveDateFormat = "yyyy-MM-dd";
 
-    public boolean isSubmitOnSave() {
+    public static boolean isSubmitOnSave() {
         return submitOnSave;
     }
 
     public void setSubmitOnSave(boolean submitOnSave) {
-        this.submitOnSave = submitOnSave;
+        KvpLibrary.submitOnSave = submitOnSave;
     }
 
-    private boolean submitOnSave = false;
+    private static boolean submitOnSave = false;
 
     public String getSourceDateFormat() {
         return sourceDateFormat;

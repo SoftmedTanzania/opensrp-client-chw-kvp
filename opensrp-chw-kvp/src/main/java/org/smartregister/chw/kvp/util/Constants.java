@@ -16,6 +16,7 @@ public interface Constants {
     interface EVENT_TYPE {
         String KVP_PrEP_REGISTRATION = "KVP PrEP Registration";
         String KVP_FOLLOW_UP_VISIT = "Kvp Follow-up Visit";
+        String VOID_EVENT = "Void Event";
     }
 
     interface FORMS {
@@ -35,7 +36,8 @@ public interface Constants {
         String FAMILY_BASE_ENTITY_ID = "FAMILY_BASE_ENTITY_ID";
         String ACTION = "ACTION";
         String KVP_FORM_NAME = "KVP_FORM_NAME";
-
+        String MEMBER_PROFILE_OBJECT = "MemberObject";
+        String EDIT_MODE = "editMode";
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {

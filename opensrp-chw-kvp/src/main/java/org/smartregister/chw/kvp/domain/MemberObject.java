@@ -1,5 +1,7 @@
 package org.smartregister.chw.kvp.domain;
 
+import org.smartregister.util.Utils;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -61,6 +63,10 @@ public class MemberObject implements Serializable {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        return Utils.getName(getFirstName(), getLastName());
     }
 
     public void setLastName(String lastName) {

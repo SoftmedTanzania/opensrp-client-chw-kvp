@@ -2,18 +2,31 @@ package org.smartregister.chw.kvp.util;
 
 import android.util.Log;
 
+import com.vijay.jsonwizard.constants.JsonFormConstants;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.kvp.KvpLibrary;
+import org.smartregister.chw.kvp.domain.VisitDetail;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.FormUtils;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import timber.log.Timber;
+
 import static org.smartregister.chw.kvp.util.Constants.ENCOUNTER_TYPE;
+import static org.smartregister.chw.kvp.util.Constants.KVP_VISIT_GROUP;
 import static org.smartregister.chw.kvp.util.Constants.STEP_ONE;
 import static org.smartregister.chw.kvp.util.Constants.STEP_TWO;
 
@@ -104,7 +117,7 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         event.setClientDatabaseVersion(KvpLibrary.getInstance().getDatabaseVersion());
     }
 
-    private static String locationId(AllSharedPreferences allSharedPreferences) {
+    public static String locationId(AllSharedPreferences allSharedPreferences) {
         String providerId = allSharedPreferences.fetchRegisteredANM();
         String userLocationId = allSharedPreferences.fetchUserLocalityId(providerId);
         if (StringUtils.isBlank(userLocationId)) {
@@ -124,11 +137,151 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static JSONObject getFormAsJson(String formName) throws Exception {
         return FormUtils.getInstance(KvpLibrary.getInstance().context().applicationContext()).getFormJson(formName);
     }
+
     public static String cleanString(String dirtyString) {
         if (StringUtils.isBlank(dirtyString))
             return "";
 
         return dirtyString.substring(1, dirtyString.length() - 1);
     }
+
+    public static void populateForm(@Nullable JSONObject jsonObject, Map<String, @Nullable List<VisitDetail>> details) {
+        if (details == null || jsonObject == null) return;
+        try {
+            // x steps
+            String count_str = jsonObject.getString(JsonFormConstants.COUNT);
+
+            int step_count = StringUtils.isNotBlank(count_str) ? Integer.valueOf(count_str) : 1;
+            while (step_count > 0) {
+                JSONArray jsonArray = jsonObject.getJSONObject(MessageFormat.format("step{0}", step_count)).getJSONArray(JsonFormConstants.FIELDS);
+
+                int field_count = jsonArray.length() - 1;
+                while (field_count >= 0) {
+
+                    JSONObject jo = jsonArray.getJSONObject(field_count);
+                    String key = jo.getString(JsonFormConstants.KEY);
+                    List<VisitDetail> detailList = details.get(key);
+
+                    if (detailList != null) {
+                        if (jo.getString(JsonFormConstants.TYPE).equalsIgnoreCase(JsonFormConstants.CHECK_BOX)) {
+                            jo.put(JsonFormConstants.VALUE, getValue(jo, detailList));
+                        } else {
+                            String value = getValue(detailList.get(0));
+                            if (key.contains("date")) {
+                                value = NCUtil.getFormattedDate(NCUtil.getSaveDateFormat(), NCUtil.getSourceDateFormat(), value);
+                            }
+                            jo.put(JsonFormConstants.VALUE, value);
+                        }
+                    }
+
+                    field_count--;
+                }
+
+                step_count--;
+            }
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
+    public static String getValue(VisitDetail visitDetail) {
+        String humanReadable = visitDetail.getHumanReadable();
+        if (StringUtils.isNotBlank(humanReadable))
+            return humanReadable;
+
+        return visitDetail.getDetails();
+    }
+
+    public static JSONArray getValue(JSONObject jo, List<VisitDetail> visitDetails) throws JSONException {
+        JSONArray values = new JSONArray();
+        if (jo.getString(JsonFormConstants.TYPE).equalsIgnoreCase(JsonFormConstants.CHECK_BOX)) {
+            JSONArray options = jo.getJSONArray(JsonFormConstants.OPTIONS_FIELD_NAME);
+            HashMap<String, NameID> valueMap = new HashMap<>();
+
+            int x = options.length() - 1;
+            while (x >= 0) {
+                JSONObject object = options.getJSONObject(x);
+                valueMap.put(object.getString(JsonFormConstants.TEXT), new NameID(object.getString(JsonFormConstants.KEY), x));
+                x--;
+            }
+
+            for (VisitDetail d : visitDetails) {
+                String val = getValue(d);
+                NameID nid = valueMap.get(val);
+                if (nid != null) {
+                    values.put(nid.name);
+                    options.getJSONObject(nid.position).put(JsonFormConstants.VALUE, true);
+                }
+            }
+        } else {
+            for (VisitDetail d : visitDetails) {
+                String val = getValue(d);
+                if (StringUtils.isNotBlank(val)) {
+                    values.put(val);
+                }
+            }
+        }
+        return values;
+    }
+
+    public static Event processVisitJsonForm(AllSharedPreferences allSharedPreferences, String entityId, String encounterType, Map<String, String> jsonStrings, String tableName) {
+
+        // aggregate all the fields into 1 payload
+        JSONObject jsonForm = null;
+        JSONObject metadata = null;
+
+        List<JSONObject> fields_obj = new ArrayList<>();
+
+        for (Map.Entry<String, String> map : jsonStrings.entrySet()) {
+            Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(map.getValue());
+
+            if (!registrationFormParams.getLeft()) {
+                return null;
+            }
+
+            if (jsonForm == null) {
+                jsonForm = registrationFormParams.getMiddle();
+            }
+
+            if (metadata == null) {
+                metadata = getJSONObject(jsonForm, METADATA);
+            }
+
+            // add all the fields to the event while injecting a new variable for grouping
+            JSONArray local_fields = registrationFormParams.getRight();
+            int x = 0;
+            while (local_fields.length() > x) {
+                try {
+                    JSONObject obj = local_fields.getJSONObject(x);
+                    obj.put(KVP_VISIT_GROUP, map.getKey());
+                    fields_obj.add(obj);
+                } catch (JSONException e) {
+                    Timber.e(e);
+                }
+                x++;
+            }
+        }
+
+        if (metadata == null) {
+            metadata = new JSONObject();
+        }
+
+        JSONArray fields = new JSONArray(fields_obj);
+        String derivedEncounterType = StringUtils.isBlank(encounterType) && jsonForm != null ? getString(jsonForm, ENCOUNTER_TYPE) : encounterType;
+
+        return org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag(allSharedPreferences), entityId, derivedEncounterType, tableName);
+    }
+
+    private static class NameID {
+        private String name;
+        private int position;
+
+        public NameID(String name, int position) {
+            this.name = name;
+            this.position = position;
+        }
+    }
+
 
 }

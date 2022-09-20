@@ -51,5 +51,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="menu_kvp_prep">KVP/PrEP</string>
+    <string name="optional">Optional</string>
+    <string name="error_unable_save_visit">Unable to save visit</string>
 
 </resources>
