@@ -135,7 +135,7 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
 
     @MenuRes
     public int getMenuResource() {
-        return R.menu.bottom_nav_family_menu;
+        return R.menu.bottom_nav_kvp_menu;
     }
 
     @Override
