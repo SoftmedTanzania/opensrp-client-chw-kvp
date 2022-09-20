@@ -66,7 +66,39 @@ public class KvpDao extends AbstractDao {
     }
 
     public static MemberObject getMember(String baseEntityID) {
-        String sql = "select m.base_entity_id , m.unique_id , m.relational_id , m.dob , m.first_name , m.middle_name , m.last_name , m.gender , m.phone_number , m.other_phone_number , f.first_name family_name ,f.primary_caregiver , f.family_head , f.village_town ,fh.first_name family_head_first_name , fh.middle_name family_head_middle_name , fh.last_name family_head_last_name, fh.phone_number family_head_phone_number , ancr.is_closed anc_is_closed, pncr.is_closed pnc_is_closed, pcg.first_name pcg_first_name , pcg.last_name pcg_last_name , pcg.middle_name pcg_middle_name , pcg.phone_number  pcg_phone_number , mr.* from ec_family_member m inner join ec_family f on m.relational_id = f.base_entity_id inner join ec_kvp_confirmation mr on mr.base_entity_id = m.base_entity_id left join ec_family_member fh on fh.base_entity_id = f.family_head left join ec_family_member pcg on pcg.base_entity_id = f.primary_caregiver left join ec_anc_register ancr on ancr.base_entity_id = m.base_entity_id left join ec_pregnancy_outcome pncr on pncr.base_entity_id = m.base_entity_id where m.base_entity_id ='" + baseEntityID + "' ";
+        String sql = "select m.base_entity_id,\n" +
+                "       m.unique_id,\n" +
+                "       m.relational_id,\n" +
+                "       m.dob,\n" +
+                "       m.first_name,\n" +
+                "       m.middle_name,\n" +
+                "       m.last_name,\n" +
+                "       m.gender,\n" +
+                "       m.phone_number,\n" +
+                "       m.other_phone_number,\n" +
+                "       f.first_name     family_name,\n" +
+                "       f.primary_caregiver,\n" +
+                "       f.family_head,\n" +
+                "       f.village_town,\n" +
+                "       fh.first_name    family_head_first_name,\n" +
+                "       fh.middle_name   family_head_middle_name,\n" +
+                "       fh.last_name     family_head_last_name,\n" +
+                "       fh.phone_number  family_head_phone_number,\n" +
+                "       ancr.is_closed   anc_is_closed,\n" +
+                "       pncr.is_closed   pnc_is_closed,\n" +
+                "       pcg.first_name   pcg_first_name,\n" +
+                "       pcg.last_name    pcg_last_name,\n" +
+                "       pcg.middle_name  pcg_middle_name,\n" +
+                "       pcg.phone_number pcg_phone_number,\n" +
+                "       mr.*\n" +
+                "from ec_family_member m\n" +
+                "         inner join ec_family f on m.relational_id = f.base_entity_id\n" +
+                "         inner join ec_kvp_prep_register mr on mr.base_entity_id = m.base_entity_id\n" +
+                "         left join ec_family_member fh on fh.base_entity_id = f.family_head\n" +
+                "         left join ec_family_member pcg on pcg.base_entity_id = f.primary_caregiver\n" +
+                "         left join ec_anc_register ancr on ancr.base_entity_id = m.base_entity_id\n" +
+                "         left join ec_pregnancy_outcome pncr on pncr.base_entity_id = m.base_entity_id\n" +
+                "where m.base_entity_id = '" + baseEntityID + "' ";
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
         DataMap<MemberObject> dataMap = cursor -> {
