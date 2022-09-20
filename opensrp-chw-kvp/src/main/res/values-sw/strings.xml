@@ -48,5 +48,6 @@
     <string name="edit">HARIRI</string>
     <string name="male">Me</string>
     <string name="female">Ke</string>
+    <string name="menu_kvp_prep">KVP/PrEP</string>
 
 </resources>

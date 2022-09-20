@@ -50,5 +50,6 @@
     <string name="edit">EDIT</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="menu_kvp_prep">KVP/PrEP</string>
 
 </resources>

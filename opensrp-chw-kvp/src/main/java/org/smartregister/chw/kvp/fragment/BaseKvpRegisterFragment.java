@@ -1,7 +1,6 @@
 package org.smartregister.chw.kvp.fragment;
 
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.smartregister.chw.kvp.activity.BaseKvpProfileActivity;
 import org.smartregister.chw.kvp.contract.KvpRegisterFragmentContract;
@@ -19,9 +18,13 @@ import org.smartregister.view.fragment.BaseRegisterFragment;
 import java.util.HashMap;
 import java.util.Set;
 
+import androidx.appcompat.widget.Toolbar;
+
 public class BaseKvpRegisterFragment extends BaseRegisterFragment implements KvpRegisterFragmentContract.View {
     public static final String CLICK_VIEW_NORMAL = "click_view_normal";
     public static final String FOLLOW_UP_VISIT = "follow_up_visit";
+    protected Toolbar toolbar;
+    protected CustomFontTextView titleView;
 
     @Override
     public void initializeAdapter(Set<View> visibleColumns) {
@@ -34,6 +37,11 @@ public class BaseKvpRegisterFragment extends BaseRegisterFragment implements Kvp
     @Override
     public void setupViews(android.view.View view) {
         super.setupViews(view);
+
+        toolbar = view.findViewById(R.id.register_toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
+        toolbar.setContentInsetsRelative(0, 0);
+        toolbar.setContentInsetStartWithNavigation(0);
 
         // Update top left icon
         qrCodeScanImageView = view.findViewById(org.smartregister.R.id.scanQrCode);
@@ -50,24 +58,26 @@ public class BaseKvpRegisterFragment extends BaseRegisterFragment implements Kvp
             getSearchView().setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_search, 0, 0, 0);
         }
 
-        // Update sort filter
-        TextView filterView = view.findViewById(org.smartregister.R.id.filter_text_view);
-        if (filterView != null) {
-            filterView.setText(getString(R.string.sort));
-        }
 
-        // Update title name
+        //hide views
         ImageView logo = view.findViewById(org.smartregister.R.id.opensrp_logo_image_view);
-        if (logo != null) {
-            logo.setVisibility(android.view.View.GONE);
-        }
+        logo.setVisibility(android.view.View.GONE);
+        android.view.View topLeftLayout = view.findViewById(R.id.top_left_layout);
+        topLeftLayout.setVisibility(android.view.View.GONE);
+        android.view.View topRightLayout = view.findViewById(R.id.top_right_layout);
+        topRightLayout.setVisibility(android.view.View.VISIBLE);
+        android.view.View sortFilterBarLayout = view.findViewById(R.id.register_sort_filter_bar_layout);
+        sortFilterBarLayout.setVisibility(android.view.View.GONE);
+        android.view.View filterSortLayout = view.findViewById(R.id.filter_sort_layout);
+        filterSortLayout.setVisibility(android.view.View.GONE);
 
-        CustomFontTextView titleView = view.findViewById(R.id.txt_title_label);
+        titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
-            titleView.setText(getString(R.string.kvp));
+            titleView.setText(R.string.menu_kvp_prep);
             titleView.setFontVariant(FontVariant.REGULAR);
         }
+
     }
 
     @Override
