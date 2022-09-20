@@ -3,8 +3,8 @@ package org.smartregister.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 
@@ -13,7 +13,7 @@ import com.vijay.jsonwizard.factory.FileSourceFactoryHelper;
 import com.vijay.jsonwizard.domain.Form;
 
 import org.json.JSONObject;
-import org.smartregister.barebones.R;
+import org.smartregister.kvp.R;
 
 
 public class TestRegisterActivity extends AppCompatActivity {
