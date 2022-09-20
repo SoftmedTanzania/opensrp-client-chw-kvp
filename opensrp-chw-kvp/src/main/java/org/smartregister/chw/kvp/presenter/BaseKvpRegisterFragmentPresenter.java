@@ -3,6 +3,7 @@ package org.smartregister.chw.kvp.presenter;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.kvp.contract.KvpRegisterFragmentContract;
 import org.smartregister.chw.kvp.util.Constants;
+import org.smartregister.chw.kvp.util.DBConstants;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
 import org.smartregister.configurableviews.model.View;
 import org.smartregister.configurableviews.model.ViewConfiguration;
@@ -38,7 +39,7 @@ public class BaseKvpRegisterFragmentPresenter implements KvpRegisterFragmentCont
 
     @Override
     public String getDefaultSortQuery() {
-        return " ";
+        return Constants.TABLES.KVP_PrEP_REGISTER + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
     }
 
     @Override

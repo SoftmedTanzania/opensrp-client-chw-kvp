@@ -124,5 +124,11 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static JSONObject getFormAsJson(String formName) throws Exception {
         return FormUtils.getInstance(KvpLibrary.getInstance().context().applicationContext()).getFormJson(formName);
     }
+    public static String cleanString(String dirtyString) {
+        if (StringUtils.isBlank(dirtyString))
+            return "";
+
+        return dirtyString.substring(1, dirtyString.length() - 1);
+    }
 
 }
