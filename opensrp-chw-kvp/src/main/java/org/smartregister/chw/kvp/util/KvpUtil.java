@@ -39,12 +39,12 @@ import timber.log.Timber;
 
 import static org.smartregister.util.Utils.getAllSharedPreferences;
 
-public class TestUtil {
+public class KvpUtil {
 
     public static void processEvent(AllSharedPreferences allSharedPreferences, Event baseEvent) throws Exception {
         if (baseEvent != null) {
-            TestJsonFormUtils.tagEvent(allSharedPreferences, baseEvent);
-            JSONObject eventJson = new JSONObject(TestJsonFormUtils.gson.toJson(baseEvent));
+            KvpJsonFormUtils.tagEvent(allSharedPreferences, baseEvent);
+            JSONObject eventJson = new JSONObject(KvpJsonFormUtils.gson.toJson(baseEvent));
 
             getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson, BaseRepository.TYPE_Unprocessed);
             startClientProcessing();
@@ -84,7 +84,7 @@ public class TestUtil {
 
             // set a pending call execution request
             if (callView != null) {
-                callView.setPendingCallRequest(() -> TestUtil.launchDialer(activity, callView, phoneNumber));
+                callView.setPendingCallRequest(() -> KvpUtil.launchDialer(activity, callView, phoneNumber));
             }
 
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_PHONE_STATE}, PermissionUtils.PHONE_STATE_PERMISSION_REQUEST_CODE);
@@ -118,8 +118,8 @@ public class TestUtil {
 
     public static void saveFormEvent(final String jsonString) throws Exception {
         AllSharedPreferences allSharedPreferences = KvpLibrary.getInstance().context().allSharedPreferences();
-        Event baseEvent = TestJsonFormUtils.processJsonForm(allSharedPreferences, jsonString);
-        TestUtil.processEvent(allSharedPreferences, baseEvent);
+        Event baseEvent = KvpJsonFormUtils.processJsonForm(allSharedPreferences, jsonString);
+        KvpUtil.processEvent(allSharedPreferences, baseEvent);
     }
 
     public static int getMemberProfileImageResourceIdentifier(String entityType) {

@@ -2,7 +2,6 @@ package org.smartregister.chw.kvp.provider;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.smartregister.chw.kvp.fragment.BaseKvpRegisterFragment;
 import org.smartregister.chw.kvp.util.DBConstants;
-import org.smartregister.chw.kvp.util.TestUtil;
+import org.smartregister.chw.kvp.util.KvpUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.kvp.R;
@@ -28,6 +27,7 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 import static org.smartregister.util.Utils.getName;
@@ -65,7 +65,7 @@ public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProv
             return context.getResources().getString(R.string.pnc_string);
         } else {
             String gender = Utils.getValue(commonPersonObjectClient.getColumnmaps(), DBConstants.KEY.GENDER, true);
-            return TestUtil.getGenderTranslated(context, gender);
+            return KvpUtil.getGenderTranslated(context, gender);
         }
     }
 

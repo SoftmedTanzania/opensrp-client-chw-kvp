@@ -3,10 +3,8 @@ package org.smartregister.chw.kvp.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.MenuRes;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
-import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.domain.Form;
 
@@ -23,11 +21,11 @@ import org.smartregister.chw.kvp.model.BaseKvpRegisterModel;
 import org.smartregister.chw.kvp.presenter.BaseKvpRegisterPresenter;
 import org.smartregister.chw.kvp.util.Constants;
 import org.smartregister.chw.kvp.util.DBConstants;
-import org.smartregister.chw.kvp.util.TestJsonFormUtils;
-import org.smartregister.chw.kvp.util.TestUtil;
+import org.smartregister.chw.kvp.util.KvpJsonFormUtils;
+import org.smartregister.chw.kvp.util.KvpUtil;
 import org.smartregister.helper.BottomNavigationHelper;
-import org.smartregister.listener.BottomNavigationListener;
 import org.smartregister.kvp.R;
+import org.smartregister.listener.BottomNavigationListener;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.util.Utils;
 import org.smartregister.view.activity.BaseRegisterActivity;
@@ -37,6 +35,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.MenuRes;
+import androidx.fragment.app.Fragment;
 import timber.log.Timber;
 
 public class BaseKvpRegisterActivity extends BaseRegisterActivity implements KvpRegisterContract.View {
@@ -165,7 +165,7 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
             try {
                 String jsonString = data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON);
                 JSONObject form = new JSONObject(jsonString);
-                JSONArray fieldsOne = TestJsonFormUtils.fields(form, Constants.STEP_ONE);
+                JSONArray fieldsOne = KvpJsonFormUtils.fields(form, Constants.STEP_ONE);
                 updateFormField(fieldsOne, DBConstants.KEY.RELATIONAL_ID, FAMILY_BASE_ENTITY_ID);
 //                process kvp form
                 presenter().saveForm(form.toString());
@@ -195,7 +195,7 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
         try {
             long lastSyncTimeStamp = Utils.getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
-            TestUtil.getClientProcessorForJava().processClient(TestUtil.getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
+            KvpUtil.getClientProcessorForJava().processClient(KvpUtil.getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
             Utils.getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
         } catch (Exception e) {
             Timber.d(e);

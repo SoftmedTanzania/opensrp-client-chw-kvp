@@ -1,14 +1,14 @@
 package org.smartregister.chw.kvp.interactor;
 
-import androidx.annotation.VisibleForTesting;
-
 import org.smartregister.chw.kvp.contract.KvpProfileContract;
 import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.chw.kvp.util.AppExecutors;
-import org.smartregister.chw.kvp.util.TestUtil;
+import org.smartregister.chw.kvp.util.KvpUtil;
 import org.smartregister.domain.AlertStatus;
 
 import java.util.Date;
+
+import androidx.annotation.VisibleForTesting;
 
 public class BaseKvpProfileInteractor implements KvpProfileContract.Interactor {
     protected AppExecutors appExecutors;
@@ -37,7 +37,7 @@ public class BaseKvpProfileInteractor implements KvpProfileContract.Interactor {
 
         Runnable runnable = () -> {
             try {
-                TestUtil.saveFormEvent(jsonString);
+                KvpUtil.saveFormEvent(jsonString);
             } catch (Exception e) {
                 e.printStackTrace();
             }

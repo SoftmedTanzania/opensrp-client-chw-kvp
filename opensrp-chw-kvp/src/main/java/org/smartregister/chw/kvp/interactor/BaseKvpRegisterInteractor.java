@@ -1,10 +1,10 @@
 package org.smartregister.chw.kvp.interactor;
 
-import androidx.annotation.VisibleForTesting;
-
 import org.smartregister.chw.kvp.contract.KvpRegisterContract;
 import org.smartregister.chw.kvp.util.AppExecutors;
-import org.smartregister.chw.kvp.util.TestUtil;
+import org.smartregister.chw.kvp.util.KvpUtil;
+
+import androidx.annotation.VisibleForTesting;
 
 public class BaseKvpRegisterInteractor implements KvpRegisterContract.Interactor {
 
@@ -24,7 +24,7 @@ public class BaseKvpRegisterInteractor implements KvpRegisterContract.Interactor
 
         Runnable runnable = () -> {
             try {
-                TestUtil.saveFormEvent(jsonString);
+                KvpUtil.saveFormEvent(jsonString);
             } catch (Exception e) {
                 e.printStackTrace();
             }

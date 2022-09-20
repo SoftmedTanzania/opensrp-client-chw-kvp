@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,7 +24,7 @@ import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.chw.kvp.interactor.BaseKvpProfileInteractor;
 import org.smartregister.chw.kvp.presenter.BaseKvpProfilePresenter;
 import org.smartregister.chw.kvp.util.Constants;
-import org.smartregister.chw.kvp.util.TestUtil;
+import org.smartregister.chw.kvp.util.KvpUtil;
 import org.smartregister.domain.AlertStatus;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.kvp.R;
@@ -38,6 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
@@ -209,7 +209,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         int age = new Period(new DateTime(memberObject.getAge()), new DateTime()).getYears();
         textViewName.setText(String.format("%s %s %s, %d", memberObject.getFirstName(),
                 memberObject.getMiddleName(), memberObject.getLastName(), age));
-        textViewGender.setText(TestUtil.getGenderTranslated(this, memberObject.getGender()));
+        textViewGender.setText(KvpUtil.getGenderTranslated(this, memberObject.getGender()));
         textViewLocation.setText(memberObject.getAddress());
         textViewUniqueID.setText(memberObject.getUniqueId());
 
@@ -264,9 +264,9 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         rlUpcomingServices.setVisibility(View.VISIBLE);
 
         if (status == AlertStatus.upcoming) {
-            tvUpComingServices.setText(TestUtil.fromHtml(getString(R.string.vaccine_service_upcoming, service, dateFormat.format(date))));
+            tvUpComingServices.setText(KvpUtil.fromHtml(getString(R.string.vaccine_service_upcoming, service, dateFormat.format(date))));
         } else {
-            tvUpComingServices.setText(TestUtil.fromHtml(getString(R.string.vaccine_service_due, service, dateFormat.format(date))));
+            tvUpComingServices.setText(KvpUtil.fromHtml(getString(R.string.vaccine_service_due, service, dateFormat.format(date))));
         }
     }
 
@@ -278,7 +278,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         } else if (status == AlertStatus.normal) {
             setFamilyStatus(getString(R.string.family_has_services_due));
         } else if (status == AlertStatus.urgent) {
-            tvFamilyStatus.setText(TestUtil.fromHtml(getString(R.string.family_has_service_overdue)));
+            tvFamilyStatus.setText(KvpUtil.fromHtml(getString(R.string.family_has_service_overdue)));
         }
     }
 

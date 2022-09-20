@@ -17,7 +17,7 @@ import static org.smartregister.chw.kvp.util.Constants.ENCOUNTER_TYPE;
 import static org.smartregister.chw.kvp.util.Constants.STEP_ONE;
 import static org.smartregister.chw.kvp.util.Constants.STEP_TWO;
 
-public class TestJsonFormUtils extends org.smartregister.util.JsonFormUtils {
+public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
 
     public static Triple<Boolean, JSONObject, JSONArray> validateParameters(String jsonString) {
