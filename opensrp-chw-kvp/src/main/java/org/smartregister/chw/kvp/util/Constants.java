@@ -62,4 +62,8 @@ public interface Constants {
         String MEMBER_OBJECT = "memberObject";
     }
 
+    interface JSON_FORM_KEY {
+        String FACILITY_NAME = "facility_name";
+    }
+
 }
