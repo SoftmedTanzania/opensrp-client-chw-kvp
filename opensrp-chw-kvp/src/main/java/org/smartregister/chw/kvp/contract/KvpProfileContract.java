@@ -26,6 +26,8 @@ public interface KvpProfileContract {
         void recordPnc(MemberObject memberObject);
 
         void hideView();
+
+        void openFollowupVisit();
     }
 
     interface Presenter {

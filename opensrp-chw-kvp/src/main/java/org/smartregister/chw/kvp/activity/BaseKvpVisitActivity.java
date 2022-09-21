@@ -212,7 +212,7 @@ public class BaseKvpVisitActivity extends SecuredActivity implements BaseKvpVisi
 
     @Override
     public void redrawHeader(MemberObject memberObject) {
-        tvTitle.setText(MessageFormat.format("{0}, {1} \u00B7 {2}", memberObject.getFullName(), memberObject.getAge(), getString(R.string.kvp_followup_visit)));
+        tvTitle.setText(MessageFormat.format("{0}, {1}", memberObject.getFullName(), memberObject.getAge()));
     }
 
     @Override

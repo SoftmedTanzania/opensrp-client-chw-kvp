@@ -15,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.smartregister.chw.kvp.contract.KvpProfileContract;
 import org.smartregister.chw.kvp.custom_views.BaseKvpFloatingMenu;
 import org.smartregister.chw.kvp.dao.KvpDao;
@@ -64,17 +62,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected ImageView imageViewCross;
     protected TextView textViewUndo;
     protected RelativeLayout rlKvpPositiveDate;
-    private TextView tvUpComingServices;
-    private TextView tvFamilyStatus;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
     protected TextView textViewVisitDone;
     protected RelativeLayout visitDone;
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
-
-    private ProgressBar progressBar;
     protected BaseKvpFloatingMenu baseKvpFloatingMenu;
+    private TextView tvUpComingServices;
+    private TextView tvFamilyStatus;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    private ProgressBar progressBar;
 
     public static void startProfileActivity(Activity activity, String baseEntityId) {
         Intent intent = new Intent(activity, BaseKvpProfileActivity.class);
@@ -176,6 +173,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             this.openUpcomingService();
         } else if (id == R.id.rlFamilyServicesDue) {
             this.openFamilyDueServices();
+        } else if (id == R.id.textview_record_kvp) {
+            this.openFollowupVisit();
         }
     }
 
@@ -203,12 +202,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewRecordKvp.setVisibility(View.GONE);
     }
 
+    @Override
+    public void openFollowupVisit() {
+        //Implement in application
+    }
+
     @SuppressLint("DefaultLocale")
     @Override
     public void setProfileViewWithData() {
-        int age = new Period(new DateTime(memberObject.getAge()), new DateTime()).getYears();
         textViewName.setText(String.format("%s %s %s, %d", memberObject.getFirstName(),
-                memberObject.getMiddleName(), memberObject.getLastName(), age));
+                memberObject.getMiddleName(), memberObject.getLastName(), memberObject.getAge()));
         textViewGender.setText(KvpUtil.getGenderTranslated(this, memberObject.getGender()));
         textViewLocation.setText(memberObject.getAddress());
         textViewUniqueID.setText(memberObject.getUniqueId());
