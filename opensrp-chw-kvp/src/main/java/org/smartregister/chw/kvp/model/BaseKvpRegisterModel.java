@@ -10,6 +10,7 @@ public class BaseKvpRegisterModel implements KvpRegisterContract.Model {
     public JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception {
         JSONObject jsonObject = KvpJsonFormUtils.getFormAsJson(formName);
         KvpJsonFormUtils.getRegistrationForm(jsonObject, entityId, currentLocationId);
+        KvpJsonFormUtils.initializeHealthFacilitiesList(jsonObject);
 
         return jsonObject;
     }
