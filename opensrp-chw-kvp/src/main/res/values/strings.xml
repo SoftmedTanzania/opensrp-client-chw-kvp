@@ -12,8 +12,10 @@
     <string name="saving_dialog_title">Saving</string>
     <string name="interpunct" translatable="false">\u00b7</string>
     <string name="kvp_followup_visit">FOLLOWUP\nVISIT</string>
-    <string name="record_kvp">Record kvp follow-up</string>
-    <string name="return_to_previous_page">Return all Kvp Clients</string>
+    <string name="record_kvp">Provide KVP Service</string>
+    <string name="return_to_previous_page">Return all KVP Clients</string>
+    <string name="return_to_kvp_clients">Return all KVP Clients</string>
+    <string name="return_to_kvp_prep_clients">Return all KVP/PrEP Clients</string>
     <string name="last_visit_40_days_ago">Last visit %1$s ago</string>
     <string name="view_medical_history">View medical history</string>
     <string name="call_no_number_provided">(no number provided)</string>
