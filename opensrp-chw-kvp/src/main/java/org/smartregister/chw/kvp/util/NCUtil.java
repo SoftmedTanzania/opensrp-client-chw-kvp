@@ -212,7 +212,7 @@ public class NCUtil {
 
 
     // executed by event client processor
-    public static Visit eventToVisit(org.smartregister.domain.db.Event event) throws JSONException {
+    public static Visit eventToVisit(org.smartregister.domain.Event event) throws JSONException {
         List<String> exceptions = Arrays.asList(default_obs);
 
         Visit visit = new Visit();
@@ -232,7 +232,7 @@ public class NCUtil {
 
         Map<String, List<VisitDetail>> details = new HashMap<>();
         if (event.getObs() != null) {
-            for (org.smartregister.domain.db.Obs obs : event.getObs()) {
+            for (org.smartregister.domain.Obs obs : event.getObs()) {
                 if (!exceptions.contains(obs.getFormSubmissionField())) {
                     VisitDetail detail = new VisitDetail();
                     detail.setVisitDetailsId(org.smartregister.chw.kvp.util.KvpJsonFormUtils.generateRandomUUIDString());
