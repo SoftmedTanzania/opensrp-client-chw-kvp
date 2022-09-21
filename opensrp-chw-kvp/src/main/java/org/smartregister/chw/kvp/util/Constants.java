@@ -25,6 +25,14 @@ public interface Constants {
         String KVP_FOLLOW_UP_VISIT = "kvp_followup_visit";
     }
 
+    interface KVP_PrEP_FOLLOWUP_FORMS {
+        String VISIT_TYPE = "kvp_prep_visit_type";
+        String SBCC_SERVICES = "kvp_prep_sbcc_services";
+        String PREVENTIVE_SERVICES = "kvp_prep_preventive_services";
+        String STRUCTURAL_SERVICES = "kvp_prep_structural_services";
+        String REFERRAL_SERVICES = "kvp_prep_referral_services";
+    }
+
     interface TABLES {
         String KVP_PrEP_REGISTER = "ec_kvp_prep_register";
         String KVP_REGISTER = "ec_kvp_register";
