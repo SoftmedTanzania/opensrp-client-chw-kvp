@@ -15,7 +15,7 @@ public interface Constants {
 
     interface EVENT_TYPE {
         String KVP_PrEP_REGISTRATION = "KVP PrEP Registration";
-        String KVP_FOLLOW_UP_VISIT = "Kvp Follow-up Visit";
+        String KVP_FOLLOW_UP_VISIT = "Kvp PrEP Follow-up Visit";
         String VOID_EVENT = "Void Event";
     }
 
