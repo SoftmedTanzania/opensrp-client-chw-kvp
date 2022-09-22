@@ -51,5 +51,7 @@
     <string name="male">Me</string>
     <string name="female">Ke</string>
     <string name="menu_kvp_prep">KVP/PrEP</string>
+    <string name="menu_kvp">KVP</string>
+    <string name="menu_prep">PrEP</string>
 
 </resources>
