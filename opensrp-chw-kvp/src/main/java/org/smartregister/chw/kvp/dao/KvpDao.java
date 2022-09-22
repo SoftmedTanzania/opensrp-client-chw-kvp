@@ -11,9 +11,8 @@ public class KvpDao extends AbstractDao {
 
 
     public static boolean isRegisteredForKvpPrEP(String baseEntityID) {
-        String sql = "SELECT count(p.base_entity_id) count FROM ec_kvp_confirmation p " +
-                "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 AND p.kvp  = 1 " +
-                "AND datetime('NOW') <= datetime(p.last_interacted_with/1000, 'unixepoch', 'localtime','+15 days')";
+        String sql = "SELECT count(p.base_entity_id) count FROM ec_kvp_prep_register p " +
+                "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
 
         DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "count");
 
