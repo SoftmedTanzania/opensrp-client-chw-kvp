@@ -39,7 +39,7 @@ public class BaseKvpRegisterFragmentPresenter implements KvpRegisterFragmentCont
 
     @Override
     public String getDefaultSortQuery() {
-        return Constants.TABLES.KVP_PrEP_REGISTER + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
+        return getMainTable() + "." + DBConstants.KEY.LAST_INTERACTED_WITH + " DESC ";
     }
 
     @Override
