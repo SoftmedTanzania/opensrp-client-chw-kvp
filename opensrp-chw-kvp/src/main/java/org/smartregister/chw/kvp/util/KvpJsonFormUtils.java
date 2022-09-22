@@ -96,8 +96,8 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if (Constants.EVENT_TYPE.KVP_PrEP_REGISTRATION.equals(encounter_type)) {
             encounter_type = Constants.TABLES.KVP_PrEP_REGISTER;
-        } else if (Constants.EVENT_TYPE.KVP_FOLLOW_UP_VISIT.equals(encounter_type)) {
-            encounter_type = Constants.TABLES.KVP_FOLLOW_UP;
+        } else if (Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT.equals(encounter_type)) {
+            encounter_type = Constants.TABLES.KVP_PrEP_FOLLOWUP;
         }
         return org.smartregister.util.JsonFormUtils.createEvent(fields, getJSONObject(jsonForm, METADATA), formTag(allSharedPreferences), entityId, getString(jsonForm, ENCOUNTER_TYPE), encounter_type);
     }

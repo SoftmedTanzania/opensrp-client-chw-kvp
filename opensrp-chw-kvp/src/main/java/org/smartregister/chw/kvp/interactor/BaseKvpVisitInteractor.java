@@ -327,10 +327,10 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
     }
 
     protected String getEncounterType() {
-        return Constants.EVENT_TYPE.KVP_FOLLOW_UP_VISIT;
+        return Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT;
     }
 
     protected String getTableName() {
-        return Constants.TABLES.KVP_FOLLOW_UP;
+        return Constants.TABLES.KVP_PrEP_FOLLOWUP;
     }
 }

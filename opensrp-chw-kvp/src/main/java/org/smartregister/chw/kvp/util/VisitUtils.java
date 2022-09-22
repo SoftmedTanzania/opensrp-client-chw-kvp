@@ -27,7 +27,7 @@ import java.util.UUID;
 public class VisitUtils {
     public static List<Visit> getVisits(String memberID, String... eventTypes) {
 
-        List<Visit> visits = (eventTypes != null && eventTypes.length > 0) ? getVisitsOnly(memberID, eventTypes[0]) : getVisitsOnly(memberID, Constants.EVENT_TYPE.KVP_FOLLOW_UP_VISIT);
+        List<Visit> visits = (eventTypes != null && eventTypes.length > 0) ? getVisitsOnly(memberID, eventTypes[0]) : getVisitsOnly(memberID, Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT);
 
         return visits;
     }
