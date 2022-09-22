@@ -56,10 +56,8 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
         ACTION = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.ACTION);
         FORM_NAME = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.KVP_FORM_NAME);
         GENDER = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.GENDER);
-        String ageFromIntent = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.AGE);
-        if(ageFromIntent!= null){
-            AGE = Integer.parseInt(ageFromIntent);
-        }
+        AGE = getIntent().getIntExtra(Constants.ACTIVITY_PAYLOAD.AGE,0);
+
         onStartActivityWithAction();
     }
 
