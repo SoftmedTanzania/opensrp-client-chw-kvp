@@ -195,6 +195,9 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
             }
             startClientProcessing();
         }
+        if(resultCode == Activity.RESULT_CANCELED){
+            finish();
+        }
     }
 
     private void updateFormField(JSONArray formFieldArrays, String formFieldKey, String updateValue) {
