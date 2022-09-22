@@ -15,4 +15,18 @@ public class BaseKvpRegisterModel implements KvpRegisterContract.Model {
         return jsonObject;
     }
 
+    @Override
+    public JSONObject getFormAsJson(String formName, String entityId, String currentLocationId, String gender, int age) throws Exception {
+        JSONObject jsonObject = KvpJsonFormUtils.getFormAsJson(formName);
+        KvpJsonFormUtils.getRegistrationForm(jsonObject, entityId, currentLocationId);
+        KvpJsonFormUtils.initializeHealthFacilitiesList(jsonObject);
+        JSONObject global = jsonObject.getJSONObject("global");
+        if (global != null && gender != null) {
+            global.put("age", age);
+            global.put("gender", gender);
+        }
+
+        return jsonObject;
+    }
+
 }

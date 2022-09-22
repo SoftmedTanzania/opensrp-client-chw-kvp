@@ -47,6 +47,9 @@ public interface Constants {
         String KVP_FORM_NAME = "KVP_FORM_NAME";
         String MEMBER_PROFILE_OBJECT = "MemberObject";
         String EDIT_MODE = "editMode";
+        String GENDER = "gender";
+        String AGE = "age";
+        
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {

@@ -11,11 +11,14 @@ public interface KvpRegisterContract {
         Presenter presenter();
 
         Form getFormConfig();
+
+        void startFormActivity(String formName, String baseEntityId, String metadata, String gender, int age);
     }
 
     interface Presenter extends BaseRegisterContract.Presenter {
 
         void startForm(String formName, String entityId, String metadata, String currentLocationId) throws Exception;
+        void startForm(String formName, String entityId, String metadata, String currentLocationId, String gender, int age) throws Exception;
 
         void saveForm(String jsonString);
 
@@ -24,6 +27,7 @@ public interface KvpRegisterContract {
     interface Model {
 
         JSONObject getFormAsJson(String formName, String entityId, String currentLocationId) throws Exception;
+        JSONObject getFormAsJson(String formName, String entityId, String currentLocationId, String gender, int age) throws Exception;
 
     }
 

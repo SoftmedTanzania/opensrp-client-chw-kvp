@@ -45,6 +45,8 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
     protected String FAMILY_BASE_ENTITY_ID;
     protected String ACTION;
     protected String FORM_NAME;
+    protected String GENDER;
+    protected int AGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,11 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
         FAMILY_BASE_ENTITY_ID = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.FAMILY_BASE_ENTITY_ID);
         ACTION = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.ACTION);
         FORM_NAME = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.KVP_FORM_NAME);
+        GENDER = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.GENDER);
+        String ageFromIntent = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.AGE);
+        if(ageFromIntent!= null){
+            AGE = Integer.parseInt(ageFromIntent);
+        }
         onStartActivityWithAction();
     }
 
@@ -61,7 +68,7 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
      */
     protected void onStartActivityWithAction() {
         if (FORM_NAME != null && ACTION != null) {
-            startFormActivity(FORM_NAME, BASE_ENTITY_ID, null);
+            startFormActivity(FORM_NAME, BASE_ENTITY_ID, null, GENDER, AGE);
         }
     }
 
@@ -71,11 +78,11 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
     }
 
     @Override
-    public void startFormActivity(String formName, String entityId, String metaData) {
+    public void startFormActivity(String formName, String entityId, String metaData, String gender, int age) {
         try {
             if (mBaseFragment instanceof BaseKvpRegisterFragment) {
                 String locationId = Context.getInstance().allSharedPreferences().getPreference(AllConstants.CURRENT_LOCATION_ID);
-                presenter().startForm(formName, entityId, metaData, locationId);
+                presenter().startForm(formName, entityId, metaData, locationId, gender, age);
             }
         } catch (Exception e) {
             Timber.e(e);
@@ -151,6 +158,19 @@ public class BaseKvpRegisterActivity extends BaseRegisterActivity implements Kvp
     @Override
     protected Fragment[] getOtherFragments() {
         return new Fragment[0];
+    }
+
+    @Override
+    public void startFormActivity(String formName, String entityId, String metaData) {
+        try {
+            if (mBaseFragment instanceof BaseKvpRegisterFragment) {
+                String locationId = Context.getInstance().allSharedPreferences().getPreference(AllConstants.CURRENT_LOCATION_ID);
+                presenter().startForm(formName, entityId, metaData, locationId);
+            }
+        } catch (Exception e) {
+            Timber.e(e);
+            displayToast(getString(R.string.error_unable_to_start_form));
+        }
     }
 
     @Override
