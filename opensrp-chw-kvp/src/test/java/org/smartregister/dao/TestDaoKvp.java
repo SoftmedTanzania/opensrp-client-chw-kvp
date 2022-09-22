@@ -28,17 +28,12 @@ public class TestDaoKvp extends KvpDao {
         setRepository(repository);
     }
 
-    @Test
-    public void testGetKvpTestDate() {
-        Mockito.doReturn(database).when(repository).getReadableDatabase();
-        KvpDao.getKvpTestDate("123456");
-        Mockito.verify(database).rawQuery(Mockito.anyString(), Mockito.any());
-    }
+
 
     @Test
     public void testIsRegisteredForKvp() {
         Mockito.doReturn(database).when(repository).getReadableDatabase();
-        boolean registered = KvpDao.isRegisteredForKvp("12345");
+        boolean registered = KvpDao.isRegisteredForKvpPrEP("12345");
         Mockito.verify(database).rawQuery(Mockito.anyString(), Mockito.any());
         Assert.assertFalse(registered);
     }

@@ -4,40 +4,13 @@ import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.dao.AbstractDao;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class KvpDao extends AbstractDao {
 
-    public static Date getKvpTestDate(String baseEntityID) {
-        String sql = "select kvp_test_date from ec_kvp_confirmation where base_entity_id = '" + baseEntityID + "'";
 
-        DataMap<Date> dataMap = cursor -> getCursorValueAsDate(cursor, "kvp_test_date", getNativeFormsDateFormat());
-
-        List<Date> res = readData(sql, dataMap);
-        if (res == null || res.size() != 1)
-            return null;
-
-        return res.get(0);
-    }
-    public static Date getKvpFollowUpVisitDate(String baseEntityID) {
-        String sql = "SELECT eventDate FROM event where eventType ='Kvp Follow-up Visit' AND baseEntityId ='" + baseEntityID + "'";
-
-        DataMap<Date> dataMap = cursor -> getCursorValueAsDate(cursor, "eventDate", getNativeFormsDateFormat());
-
-        List<Date> res = readData(sql, dataMap);
-        if (res == null || res.size() != 1)
-            return null;
-
-        return res.get(0);
-    }
-    public static void closeKvpMemberFromRegister(String baseEntityID) {
-        String sql = "update ec_kvp_confirmation set is_closed = 1 where base_entity_id = '" + baseEntityID + "'";
-        updateDB(sql);
-    }
-
-    public static boolean isRegisteredForKvp(String baseEntityID) {
+    public static boolean isRegisteredForKvpPrEP(String baseEntityID) {
         String sql = "SELECT count(p.base_entity_id) count FROM ec_kvp_confirmation p " +
                 "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 AND p.kvp  = 1 " +
                 "AND datetime('NOW') <= datetime(p.last_interacted_with/1000, 'unixepoch', 'localtime','+15 days')";
@@ -49,20 +22,6 @@ public class KvpDao extends AbstractDao {
             return false;
 
         return res.get(0) > 0;
-    }
-
-    public static Integer getKvpFamilyMembersCount(String familyBaseEntityId) {
-        String sql = "SELECT count(emc.base_entity_id) count FROM ec_kvp_confirmation emc " +
-                "INNER Join ec_family_member fm on fm.base_entity_id = emc.base_entity_id " +
-                "WHERE fm.relational_id = '" + familyBaseEntityId + "' AND fm.is_closed = 0 " +
-                "AND emc.is_closed = 0 AND emc.kvp = 1";
-
-        DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "count");
-
-        List<Integer> res = readData(sql, dataMap);
-        if (res == null || res.size() == 0)
-            return 0;
-        return res.get(0);
     }
 
     public static MemberObject getMember(String baseEntityID) {
