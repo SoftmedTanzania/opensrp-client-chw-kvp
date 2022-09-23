@@ -55,6 +55,7 @@ public interface Constants {
         String GENDER = "gender";
         String AGE = "age";
 
+        String PROFILE_TYPE = "profile_type";
     }
 
     interface ACTIVITY_PAYLOAD_TYPE {
@@ -73,5 +74,12 @@ public interface Constants {
     interface JSON_FORM_KEY {
         String FACILITY_NAME = "facility_name";
     }
+
+    interface PROFILE_TYPES {
+        String KVP_PROFILE = "kvp_profile";
+        String KVP_PrEP_PROFILE = "kvp_prep_profile";
+        String PrEP_PROFILE = "prep_profile";
+    }
+
 
 }

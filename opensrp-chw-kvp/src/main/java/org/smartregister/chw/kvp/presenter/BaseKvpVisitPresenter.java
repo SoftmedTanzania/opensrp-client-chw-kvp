@@ -59,9 +59,9 @@ public class BaseKvpVisitPresenter implements BaseKvpVisitContract.Presenter, Ba
     }
 
     @Override
-    public void reloadMemberDetails(String memberID) {
+    public void reloadMemberDetails(String memberID, String profileType) {
         view.get().displayProgressBar(true);
-        interactor.reloadMemberDetails(memberID, this);
+        interactor.reloadMemberDetails(memberID, profileType, this);
     }
 
     @Override

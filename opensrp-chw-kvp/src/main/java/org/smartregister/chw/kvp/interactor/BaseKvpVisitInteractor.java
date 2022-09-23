@@ -56,8 +56,8 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
     }
 
     @Override
-    public void reloadMemberDetails(String memberID, BaseKvpVisitContract.InteractorCallBack callBack) {
-        MemberObject memberObject = getMemberClient(memberID);
+    public void reloadMemberDetails(String memberID, String profileType, BaseKvpVisitContract.InteractorCallBack callBack) {
+        MemberObject memberObject = getMemberClient(memberID, profileType);
         if (memberObject != null) {
             final Runnable runnable = () -> {
                 appExecutors.mainThread().execute(() -> callBack.onMemberDetailsReloaded(memberObject));
@@ -67,13 +67,20 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
     }
 
     /**
-     * Override this method and return actual member object for the provided user
+     * Default if profile type is not provided is KVP/PrEP member
      *
-     * @param memberID unique identifier for the user
+     * @param memberID    unique identifier for the user
+     * @param profileType profile type being used
      * @return MemberObject wrapper for the user's data
      */
     @Override
-    public MemberObject getMemberClient(String memberID) {
+    public MemberObject getMemberClient(String memberID, String profileType) {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
+            return KvpDao.getKvpMember(memberID);
+        }
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            return KvpDao.getPrEPMember(memberID);
+        }
         return KvpDao.getMember(memberID);
     }
 

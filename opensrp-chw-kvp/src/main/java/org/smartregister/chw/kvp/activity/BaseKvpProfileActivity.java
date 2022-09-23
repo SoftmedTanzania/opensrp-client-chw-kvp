@@ -68,6 +68,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
     protected BaseKvpFloatingMenu baseKvpFloatingMenu;
+    protected String profileType;
     private TextView tvUpComingServices;
     private TextView tvFamilyStatus;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
@@ -85,6 +86,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         Toolbar toolbar = findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
         String baseEntityId = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
+        profileType = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.PROFILE_TYPE);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -139,7 +141,13 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewUndo.setOnClickListener(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
-        memberObject = KvpDao.getMember(baseEntityId);
+        if (StringUtils.isNotBlank(profileType) && profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
+            memberObject = KvpDao.getKvpMember(baseEntityId);
+        } else if (StringUtils.isNotBlank(profileType) && profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            memberObject = KvpDao.getPrEPMember(baseEntityId);
+        } else {
+            memberObject = KvpDao.getMember(baseEntityId);
+        }
         initializePresenter();
         profilePresenter.fillProfileData(memberObject);
         setupViews();

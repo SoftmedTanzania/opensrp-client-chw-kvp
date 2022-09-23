@@ -14,7 +14,7 @@ import java.util.Map;
 public interface BaseKvpVisitContract {
     interface View extends VisitView {
 
-       Presenter presenter();
+        Presenter presenter();
 
         Form getFormConfig();
 
@@ -85,7 +85,7 @@ public interface BaseKvpVisitContract {
 
         void submitVisit();
 
-        void reloadMemberDetails(String memberID);
+        void reloadMemberDetails(String memberID, String profileType);
     }
 
     interface Model {
@@ -96,9 +96,9 @@ public interface BaseKvpVisitContract {
 
     interface Interactor {
 
-        void reloadMemberDetails(String memberID, InteractorCallBack callBack);
+        void reloadMemberDetails(String memberID, String profileType, InteractorCallBack callBack);
 
-        MemberObject getMemberClient(String memberID);
+        MemberObject getMemberClient(String memberID, String profileType);
 
         void saveRegistration(String jsonString, boolean isEditMode, final InteractorCallBack callBack);
 

@@ -52,11 +52,13 @@ public class BaseKvpVisitActivity extends SecuredActivity implements BaseKvpVisi
     protected String current_action;
     protected String confirmCloseTitle;
     protected String confirmCloseMessage;
+    protected String profileType;
 
-    public static void startMe(Activity activity, String baseEntityID, Boolean isEditMode) {
+    public static void startMe(Activity activity, String baseEntityID, Boolean isEditMode, String profileType) {
         Intent intent = new Intent(activity, org.smartregister.chw.kvp.activity.BaseKvpVisitActivity.class);
         intent.putExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID, baseEntityID);
         intent.putExtra(Constants.ACTIVITY_PAYLOAD.EDIT_MODE, isEditMode);
+        intent.putExtra(Constants.ACTIVITY_PAYLOAD.PROFILE_TYPE, profileType);
         activity.startActivityForResult(intent, Constants.REQUEST_CODE_GET_JSON);
     }
 
@@ -69,6 +71,7 @@ public class BaseKvpVisitActivity extends SecuredActivity implements BaseKvpVisi
             memberObject = (MemberObject) getIntent().getSerializableExtra(Constants.ACTIVITY_PAYLOAD.MEMBER_PROFILE_OBJECT);
             isEditMode = getIntent().getBooleanExtra(Constants.ACTIVITY_PAYLOAD.EDIT_MODE, false);
             baseEntityID = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.BASE_ENTITY_ID);
+            profileType = getIntent().getStringExtra(Constants.ACTIVITY_PAYLOAD.PROFILE_TYPE);
         }
 
         confirmCloseTitle = getString(R.string.confirm_form_close);
@@ -78,7 +81,7 @@ public class BaseKvpVisitActivity extends SecuredActivity implements BaseKvpVisi
         registerPresenter();
         if (presenter != null) {
             if (StringUtils.isNotBlank(baseEntityID)) {
-                presenter.reloadMemberDetails(baseEntityID);
+                presenter.reloadMemberDetails(baseEntityID, profileType);
             } else {
                 presenter.initialize();
             }
