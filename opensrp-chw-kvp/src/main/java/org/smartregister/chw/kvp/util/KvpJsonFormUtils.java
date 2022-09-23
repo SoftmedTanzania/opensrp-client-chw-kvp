@@ -19,7 +19,6 @@ import org.smartregister.domain.LocationTag;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.FormUtils;
-import org.smartregister.util.JsonFormUtils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -288,18 +287,12 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static void initializeHealthFacilitiesList(JSONObject form) {
+    public static void initializeHealthFacilitiesList(JSONObject referralHealthFacilities) {
         LocationWithTagsRepository locationRepository = new LocationWithTagsRepository();
         List<Location> locations = locationRepository.getAllLocationsWithTags();
-        if (locations != null && form != null) {
+        if (locations != null && referralHealthFacilities != null) {
 
             try {
-
-                JSONArray fields = form.getJSONObject(STEP_ONE)
-                        .getJSONArray(JsonFormConstants.FIELDS);
-
-                JSONObject referralHealthFacilities = JsonFormUtils.getFieldJSONObject(fields, Constants.JSON_FORM_KEY.FACILITY_NAME);
-
                 JSONArray options = referralHealthFacilities.getJSONArray("options");
                 String healthFacilityWithMsdCodeTagName = "Facility";
                 for (Location location : locations) {
