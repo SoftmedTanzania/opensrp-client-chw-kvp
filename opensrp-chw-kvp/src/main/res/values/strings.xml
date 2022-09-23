@@ -15,6 +15,7 @@
     <string name="record_kvp">Provide KVP Service</string>
     <string name="return_to_previous_page">Return all KVP Clients</string>
     <string name="return_to_kvp_clients">Return all KVP Clients</string>
+    <string name="return_to_prep_clients">Return all PrEP Clients</string>
     <string name="return_to_kvp_prep_clients">Return all KVP/PrEP Clients</string>
     <string name="last_visit_40_days_ago">Last visit %1$s ago</string>
     <string name="view_medical_history">View medical history</string>

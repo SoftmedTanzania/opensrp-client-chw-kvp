@@ -13,6 +13,7 @@
     <string name="record_kvp">Rekodi ufuatiliaji wa kvp</string>
     <string name="return_to_previous_page">Rudi kwenye wateja wote wa KVP</string>
     <string name="return_to_kvp_clients">Rudi kwenye wateja wote wa KVP</string>
+    <string name="return_to_prep_clients">Rudi kwenye wateja wote wa PrEP</string>
     <string name="return_to_kvp_prep_clients">Rudi kwenye wateja wote wa KVP/PrEP</string>
     <string name="last_visit_40_days_ago">Tembeleo la mwisho %1$s uliyopita</string>
     <string name="view_medical_history">Angalia historia ya huduma</string>

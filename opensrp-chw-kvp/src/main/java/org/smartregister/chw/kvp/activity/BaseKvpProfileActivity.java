@@ -97,6 +97,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         }
 
         toolbar.setNavigationOnClickListener(v -> BaseKvpProfileActivity.this.finish());
+        ((TextView) toolbar.findViewById(R.id.toolbar_title)).setText(getToolbarTitle(profileType));
         appBarLayout = this.findViewById(R.id.collapsing_toolbar_appbarlayout);
         if (Build.VERSION.SDK_INT >= 21) {
             appBarLayout.setOutlineProvider(null);
@@ -151,6 +152,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         initializePresenter();
         profilePresenter.fillProfileData(memberObject);
         setupViews();
+    }
+
+    private int getToolbarTitle(String profileType) {
+        if(profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)){
+            return R.string.return_to_kvp_clients;
+        }
+        if(profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)){
+            return R.string.return_to_prep_clients;
+        }
+        return R.string.return_to_kvp_prep_clients;
     }
 
     @Override
