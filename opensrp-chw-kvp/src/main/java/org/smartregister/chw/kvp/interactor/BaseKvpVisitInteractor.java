@@ -110,6 +110,10 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
         }
     }
 
+    protected BaseKvpVisitAction.Builder getBuilder(String title) {
+        return new BaseKvpVisitAction.Builder(context, title);
+    }
+
     protected void populateActionList(BaseKvpVisitContract.InteractorCallBack callBack) {
         final Runnable runnable = () -> {
             try {
@@ -126,12 +130,11 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     private void evaluateSampleAction(Map<String, List<VisitDetail>> details) throws BaseKvpVisitAction.ValidationException {
 
-        BaseKvpVisitAction ba =
-                new BaseKvpVisitAction.Builder(context, "Sample Action")
-                        .withSubtitle("")
-                        .withOptional(false)
-                        .withFormName("anc")
-                        .build();
+        BaseKvpVisitAction ba = getBuilder("Sample Action")
+                .withSubtitle("")
+                .withOptional(false)
+                .withFormName("anc")
+                .build();
         actionList.put("Sample Action", ba);
 
     }
