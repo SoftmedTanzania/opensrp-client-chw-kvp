@@ -59,5 +59,8 @@
     <string name="optional">Optional</string>
     <string name="error_unable_save_visit">Unable to save visit</string>
     <string name="kvp_prep_registration">KVP/PrEP Registration</string>
+    <string name="service_status">Status: %s</string>
+    <string name="service_action_count">Actions: %d</string>
+    <string name="process_visit">Process Visit</string>
 
 </resources>
