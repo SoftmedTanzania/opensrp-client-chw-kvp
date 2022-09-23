@@ -41,8 +41,11 @@ import timber.log.Timber;
 
 public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
+    protected final LinkedHashMap<String, BaseKvpVisitAction> actionList = new LinkedHashMap<>();
     private final ECSyncHelper syncHelper;
     protected AppExecutors appExecutors;
+    protected Map<String, List<VisitDetail>> details = null;
+    protected Context context;
 
     @VisibleForTesting
     public BaseKvpVisitInteractor(AppExecutors appExecutors, ECSyncHelper syncHelper) {
@@ -91,18 +94,26 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     @Override
     public void calculateActions(final BaseKvpVisitContract.View view, MemberObject memberObject, final BaseKvpVisitContract.InteractorCallBack callBack) {
+        context = view.getContext();
+        getDetailsOnEdit(view, memberObject);
+
+        populateActionList(callBack);
+    }
+
+    protected void getDetailsOnEdit(BaseKvpVisitContract.View view, MemberObject memberObject) {
+        if (view.getEditMode()) {
+            Visit lastVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT);
+
+            if (lastVisit != null) {
+                details = VisitUtils.getVisitGroups(KvpLibrary.getInstance().visitDetailsRepository().getVisits(lastVisit.getVisitId()));
+            }
+        }
+    }
+
+    protected void populateActionList(BaseKvpVisitContract.InteractorCallBack callBack) {
         final Runnable runnable = () -> {
-            final LinkedHashMap<String, BaseKvpVisitAction> actionList = new LinkedHashMap<>();
-
             try {
-                BaseKvpVisitAction ba =
-                        new BaseKvpVisitAction.Builder(view.getContext(), "Sample Action")
-                                .withSubtitle("")
-                                .withOptional(false)
-                                .withFormName("anc")
-                                .build();
-                actionList.put("Sample Action", ba);
-
+                evaluateSampleAction(details);
             } catch (BaseKvpVisitAction.ValidationException e) {
                 Timber.e(e);
             }
@@ -112,6 +123,19 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
         appExecutors.diskIO().execute(runnable);
     }
+
+    private void evaluateSampleAction(Map<String, List<VisitDetail>> details) throws BaseKvpVisitAction.ValidationException {
+
+        BaseKvpVisitAction ba =
+                new BaseKvpVisitAction.Builder(context, "Sample Action")
+                        .withSubtitle("")
+                        .withOptional(false)
+                        .withFormName("anc")
+                        .build();
+        actionList.put("Sample Action", ba);
+
+    }
+
 
     @Override
     public void submitVisit(final boolean editMode, final String memberID, final Map<String, BaseKvpVisitAction> map, final BaseKvpVisitContract.InteractorCallBack callBack) {
