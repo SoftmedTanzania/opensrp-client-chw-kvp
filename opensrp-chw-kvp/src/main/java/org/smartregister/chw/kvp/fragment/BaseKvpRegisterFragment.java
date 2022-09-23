@@ -74,10 +74,14 @@ public class BaseKvpRegisterFragment extends BaseRegisterFragment implements Kvp
         titleView = view.findViewById(R.id.txt_title_label);
         if (titleView != null) {
             titleView.setVisibility(android.view.View.VISIBLE);
-            titleView.setText(R.string.menu_kvp_prep);
+            titleView.setText(getTitleString());
             titleView.setFontVariant(FontVariant.REGULAR);
         }
 
+    }
+
+    protected int getTitleString() {
+        return R.string.menu_kvp_prep;
     }
 
     @Override
