@@ -55,6 +55,11 @@ public interface Constants {
         String KVP_CERVICAL_CANCER_SCREENING = "kvp_cervical_cancer_screening";
     }
 
+    interface KVP_BEHAVIORAL_SERVICE_FORMS {
+        String KVP_IEC_SBCC = "kvp_iec_sbcc";
+        String KVP_HEALTH_EDUCATION = "kvp_health_education";
+    }
+
     interface TABLES {
         String KVP_PrEP_REGISTER = "ec_kvp_prep_register";
         String KVP_PrEP_FOLLOWUP = "ec_kvp_prep_followup";
