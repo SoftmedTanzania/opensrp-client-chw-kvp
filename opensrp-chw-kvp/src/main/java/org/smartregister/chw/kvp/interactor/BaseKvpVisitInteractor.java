@@ -63,7 +63,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
         this.visitType = visitType;
     }
 
-    protected String getVisitType(){
+    protected String getCurrentVisitType() {
         if(StringUtils.isNotBlank(visitType)){
             return visitType;
         }
@@ -114,7 +114,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     protected void getDetailsOnEdit(BaseKvpVisitContract.View view, MemberObject memberObject) {
         if (view.getEditMode()) {
-            Visit lastVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), getVisitType());
+            Visit lastVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), getCurrentVisitType());
 
             if (lastVisit != null) {
                 details = VisitUtils.getVisitGroups(KvpLibrary.getInstance().visitDetailsRepository().getVisits(lastVisit.getVisitId()));
