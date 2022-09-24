@@ -71,7 +71,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         List<ServiceCard> serviceCards = new ArrayList<>();
 
         ServiceCard bioMedicalService = new ServiceCard();
-        bioMedicalService.setServiceName("Bio-Medical Services");
+        bioMedicalService.setServiceName(getString(R.string.bio_medical_services));
         bioMedicalService.setId(Constants.SERVICES.KVP_BIO_MEDICAL);
         bioMedicalService.setActionItems(20);
         bioMedicalService.setServiceStatus("In-Progress");
@@ -81,7 +81,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCards.add(bioMedicalService);
 
         ServiceCard behavioralService = new ServiceCard();
-        behavioralService.setServiceName("Behavioral Services");
+        behavioralService.setServiceName(getString(R.string.behavioral_services));
         behavioralService.setId(Constants.SERVICES.KVP_BEHAVIORAL);
         behavioralService.setActionItems(20);
         behavioralService.setServiceStatus("Not Started");
@@ -91,7 +91,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCards.add(behavioralService);
 
         ServiceCard structuralService = new ServiceCard();
-        structuralService.setServiceName("Structural Services");
+        structuralService.setServiceName(getString(R.string.structural_services));
         structuralService.setId(Constants.SERVICES.KVP_STRUCTURAL);
         structuralService.setActionItems(20);
         structuralService.setServiceStatus("Complete");
@@ -101,7 +101,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCards.add(structuralService);
 
         ServiceCard otherService = new ServiceCard();
-        otherService.setServiceName("Other Services");
+        otherService.setServiceName(getString(R.string.other_services));
         otherService.setId(Constants.SERVICES.KVP_OTHERS);
         otherService.setActionItems(20);
         otherService.setServiceStatus("Not Started");
