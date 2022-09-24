@@ -56,6 +56,7 @@ public class BaseServiceActionHandler implements View.OnClickListener {
 
         builder.setPositiveButton(context.getString(R.string.yes), (dialog, id) -> {
             processVisitManually(baseEntityId, visitType);
+            ((Activity) context).finish();
         });
         builder.setNegativeButton(context.getString(R.string.cancel), ((dialog, id) -> dialog.cancel()));
 
