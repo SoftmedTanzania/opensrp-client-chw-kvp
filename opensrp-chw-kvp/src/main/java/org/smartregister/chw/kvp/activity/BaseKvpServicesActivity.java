@@ -56,7 +56,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initializeMainServiceContainers();
+        new android.os.Handler().postDelayed(this::initializeMainServiceContainers, 3000);
     }
 
     protected void setupViews() {
@@ -125,6 +125,9 @@ public class BaseKvpServicesActivity extends SecuredActivity {
             if (visitType.equals(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT)) {
                 visitStatus = KvpVisitsUtil.getBioMedicalStatus(lastVisit);
             }
+            if(visitType.equals(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT)){
+                visitStatus = KvpVisitsUtil.getBehavioralServiceStatus(lastVisit);
+            }
             if(StringUtils.isNotBlank(visitStatus)){
                 int id = getResources().getIdentifier("service_status_"+ visitStatus, "string", getPackageName());
                 if(id == 0){
@@ -152,6 +155,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     @Override
     protected void onResumption() {
-        //override
+        new android.os.Handler().postDelayed(this::initializeMainServiceContainers, 3000);
     }
 }
