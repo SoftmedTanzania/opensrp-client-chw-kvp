@@ -19,6 +19,10 @@ public interface Constants {
         String KVP_REGISTRATION = "KVP Registration";
         String PrEP_REGISTRATION = "PrEP Registration";
         String VOID_EVENT = "Void Event";
+        String KVP_BIO_MEDICAL_SERVICE_VISIT = "KVP Bio Medical Service Visit";
+        String KVP_BEHAVIORAL_SERVICE_VISIT = "KVP Behavioral Service Visit";
+        String KVP_STRUCTURAL_SERVICE_VISIT = "KVP Structural Service Visit";
+        String KVP_OTHER_SERVICE_VISIT = "KVP Other Service Visit";
     }
 
     interface FORMS {
@@ -35,6 +39,12 @@ public interface Constants {
         String PREVENTIVE_SERVICES = "kvp_prep_preventive_services";
         String STRUCTURAL_SERVICES = "kvp_prep_structural_services";
         String REFERRAL_SERVICES = "kvp_prep_referral_services";
+    }
+
+    interface KVP_BIO_MEDICAL_SERVICE_FORMS {
+        String KVP_CLIENT_STATUS = "kvp_client_status";
+        String KVP_CONDOM_PROVISION = "kvp_condom_provision";
+        String KVP_HTS = "kvp_hts";
     }
 
     interface TABLES {
