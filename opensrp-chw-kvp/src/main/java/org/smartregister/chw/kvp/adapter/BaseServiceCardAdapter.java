@@ -61,6 +61,8 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         if(serviceCard.getServiceStatus().equalsIgnoreCase("Complete")){
             holder.processVisitBtn.setVisibility(View.VISIBLE);
             holder.processVisitBtn.setOnClickListener(clickListener);
+            holder.processVisitBtn.setTag(serviceCard);
+            holder.processVisitBtn.setTag(R.id.BASE_ENTITY_ID, baseEntityId);
         }
         if(serviceCard.getServiceIcon()!= null){
             Drawable service_icon = context.getResources().getDrawable(serviceCard.getServiceIcon());

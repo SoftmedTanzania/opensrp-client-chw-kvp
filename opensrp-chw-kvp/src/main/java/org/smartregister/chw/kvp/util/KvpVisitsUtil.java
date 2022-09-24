@@ -111,4 +111,12 @@ public class KvpVisitsUtil extends VisitUtils {
         }
         return false;
     }
+
+    public static void manualProcessVisit(Visit visit) throws Exception {
+        List<Visit> manualProcessedVisits = new ArrayList<>();
+        VisitDetailsRepository visitDetailsRepository = KvpLibrary.getInstance().visitDetailsRepository();
+        VisitRepository visitRepository = KvpLibrary.getInstance().visitRepository();
+        manualProcessedVisits.add(visit);
+        processVisits(manualProcessedVisits, visitRepository, visitDetailsRepository);
+    }
 }

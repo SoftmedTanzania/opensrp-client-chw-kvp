@@ -69,5 +69,7 @@
     <string name="service_status_pending">Not Started</string>
     <string name="service_status_ongoing">In-Progress</string>
     <string name="service_status_complete">Complete</string>
+    <string name="process_visit_title">Are you sure you want to process?</string>
+    <string name="process_visit_message">Processing this visit will save this into the database and you won\'t be able to make edits, This visit however will process automatically on the day change</string>
 
 </resources>
