@@ -31,6 +31,8 @@ public class KvpVisitsUtil extends VisitUtils {
         List<Visit> visits = visitRepository.getAllUnSynced();
         List<Visit> bioMedicalServiceVisit = new ArrayList<>();
         List<Visit> behavioralServiceVisits = new ArrayList<>();
+        List<Visit> structuralServiceVisits = new ArrayList<>();
+        List<Visit> otherServiceVisits = new ArrayList<>();
 
         for (Visit v : visits) {
             Date truncatedUpdatedDate = new Date(v.getUpdatedAt().getTime() - v.getUpdatedAt().getTime() % (24 * 60 * 60 * 1000));
@@ -39,16 +41,28 @@ public class KvpVisitsUtil extends VisitUtils {
                 if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT) && getBioMedicalStatus(v).equals(Complete)) {
                     bioMedicalServiceVisit.add(v);
                 }
-                if(v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT) && getBehavioralServiceStatus(v).equals(Complete) ) {
+                if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT) && getBehavioralServiceStatus(v).equals(Complete)) {
                     behavioralServiceVisits.add(v);
+                }
+                if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT) && getStructuralServiceStatus(v).equals(Complete)) {
+                    structuralServiceVisits.add(v);
+                }
+                if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT) && getOtherServiceStatus(v).equals(Complete)) {
+                    otherServiceVisits.add(v);
                 }
             }
         }
         if (bioMedicalServiceVisit.size() > 0) {
             processVisits(bioMedicalServiceVisit, visitRepository, visitDetailsRepository);
         }
-        if(behavioralServiceVisits.size() >0){
+        if (behavioralServiceVisits.size() > 0) {
             processVisits(behavioralServiceVisits, visitRepository, visitDetailsRepository);
+        }
+        if (structuralServiceVisits.size() > 0) {
+            processVisits(structuralServiceVisits, visitRepository, visitDetailsRepository);
+        }
+        if (otherServiceVisits.size() > 0) {
+            processVisits(otherServiceVisits, visitRepository, visitDetailsRepository);
         }
     }
 
@@ -82,6 +96,34 @@ public class KvpVisitsUtil extends VisitUtils {
 
             completionObject.put("is-iec_sbcc-done", computeCompletionStatus(obs, "iec_sbcc_materials"));
             completionObject.put("is-health_education-done", computeCompletionStatus(obs, "health_education_provided"));
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return getActionStatus(completionObject);
+    }
+
+    public static String getStructuralServiceStatus(Visit lastVisit) {
+        HashMap<String, Boolean> completionObject = new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(lastVisit.getJson());
+            JSONArray obs = jsonObject.getJSONArray("obs");
+
+            completionObject.put("is-gbv_analysis-done", computeCompletionStatus(obs, "gbv_screening"));
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return getActionStatus(completionObject);
+    }
+
+    public static String getOtherServiceStatus(Visit lastVisit) {
+        HashMap<String, Boolean> completionObject = new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(lastVisit.getJson());
+            JSONArray obs = jsonObject.getJSONArray("obs");
+
+            completionObject.put("is-other_services_and_referrals-done", computeCompletionStatus(obs, "health_education_provided"));
 
         } catch (Exception e) {
             Timber.e(e);

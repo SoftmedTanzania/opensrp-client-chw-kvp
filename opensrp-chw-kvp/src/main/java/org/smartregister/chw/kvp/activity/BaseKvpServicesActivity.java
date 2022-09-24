@@ -128,12 +128,18 @@ public class BaseKvpServicesActivity extends SecuredActivity {
             if (visitType.equals(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT)) {
                 visitStatus = KvpVisitsUtil.getBioMedicalStatus(lastVisit);
             }
-            if(visitType.equals(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT)){
+            if (visitType.equals(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT)) {
                 visitStatus = KvpVisitsUtil.getBehavioralServiceStatus(lastVisit);
             }
-            if(StringUtils.isNotBlank(visitStatus)){
-                int id = getResources().getIdentifier("service_status_"+ visitStatus, "string", getPackageName());
-                if(id == 0){
+            if (visitType.equals(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT)) {
+                visitStatus = KvpVisitsUtil.getStructuralServiceStatus(lastVisit);
+            }
+            if (visitType.equals(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT)) {
+                visitStatus = KvpVisitsUtil.getOtherServiceStatus(lastVisit);
+            }
+            if (StringUtils.isNotBlank(visitStatus)) {
+                int id = getResources().getIdentifier("service_status_" + visitStatus, "string", getPackageName());
+                if (id == 0) {
                     return visitStatus;
                 }
                 return getString(id);
