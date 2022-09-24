@@ -60,6 +60,11 @@ public interface Constants {
         String KVP_HEALTH_EDUCATION = "kvp_health_education";
     }
 
+    interface KVP_STRUCTURAL_AND_OTHER_SERVICES_FORMS {
+        String KVP_GBV_ANALYSIS = "kvp_gbv_analysis";
+        String KVP_OTHER_SERVICES_REFERRALS = "kvp_other_services_and_referrals";
+    }
+
     interface TABLES {
         String KVP_PrEP_REGISTER = "ec_kvp_prep_register";
         String KVP_PrEP_FOLLOWUP = "ec_kvp_prep_followup";
