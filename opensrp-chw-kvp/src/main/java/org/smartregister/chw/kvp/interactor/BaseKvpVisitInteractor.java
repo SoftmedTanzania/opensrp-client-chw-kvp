@@ -45,6 +45,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
     private final ECSyncHelper syncHelper;
     protected AppExecutors appExecutors;
     protected Map<String, List<VisitDetail>> details = null;
+    protected String visitType;
     protected Context context;
 
     @VisibleForTesting
@@ -56,6 +57,17 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     public BaseKvpVisitInteractor() {
         this(new AppExecutors(), KvpLibrary.getInstance().getEcSyncHelper());
+    }
+    public BaseKvpVisitInteractor(String visitType) {
+        this(new AppExecutors(), KvpLibrary.getInstance().getEcSyncHelper());
+        this.visitType = visitType;
+    }
+
+    protected String getVisitType(){
+        if(StringUtils.isNotBlank(visitType)){
+            return visitType;
+        }
+        return Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT;
     }
 
     @Override
@@ -102,7 +114,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     protected void getDetailsOnEdit(BaseKvpVisitContract.View view, MemberObject memberObject) {
         if (view.getEditMode()) {
-            Visit lastVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_PrEP_FOLLOW_UP_VISIT);
+            Visit lastVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), getVisitType());
 
             if (lastVisit != null) {
                 details = VisitUtils.getVisitGroups(KvpLibrary.getInstance().visitDetailsRepository().getVisits(lastVisit.getVisitId()));
