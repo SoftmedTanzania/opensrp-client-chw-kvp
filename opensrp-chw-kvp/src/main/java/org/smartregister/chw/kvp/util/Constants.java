@@ -81,5 +81,12 @@ public interface Constants {
         String PrEP_PROFILE = "prep_profile";
     }
 
+    interface SERVICES {
+        String KVP_BIO_MEDICAL = "kvp_bio_medical";
+        String KVP_BEHAVIORAL = "kvp_behavioral";
+        String KVP_OTHERS = "kvp_others";
+        String KVP_STRUCTURAL = "kvp_structural";
+    }
+
 
 }

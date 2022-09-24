@@ -72,6 +72,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
         ServiceCard bioMedicalService = new ServiceCard();
         bioMedicalService.setServiceName("Bio-Medical Services");
+        bioMedicalService.setId(Constants.SERVICES.KVP_BIO_MEDICAL);
         bioMedicalService.setActionItems(20);
         bioMedicalService.setServiceStatus("In-Progress");
         bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
@@ -80,6 +81,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
         ServiceCard behavioralService = new ServiceCard();
         behavioralService.setServiceName("Behavioral Services");
+        behavioralService.setId(Constants.SERVICES.KVP_BEHAVIORAL);
         behavioralService.setActionItems(20);
         behavioralService.setServiceStatus("Not Started");
         behavioralService.setServiceIcon(R.drawable.ic_behavioral);
@@ -88,6 +90,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
         ServiceCard structuralService = new ServiceCard();
         structuralService.setServiceName("Structural Services");
+        structuralService.setId(Constants.SERVICES.KVP_STRUCTURAL);
         structuralService.setActionItems(20);
         structuralService.setServiceStatus("Complete");
         structuralService.setServiceIcon(R.drawable.ic_structural);
@@ -96,6 +99,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
         ServiceCard otherService = new ServiceCard();
         otherService.setServiceName("Other Services");
+        otherService.setId(Constants.SERVICES.KVP_OTHERS);
         otherService.setActionItems(20);
         otherService.setServiceStatus("Not Started");
         otherService.setServiceIcon(R.drawable.ic_others);
@@ -105,7 +109,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCardAdapter.setServiceCards(serviceCards);
     }
 
-    public BaseServiceActionHandler getServiceHandler(){
+    public BaseServiceActionHandler getServiceHandler() {
         return new BaseServiceActionHandler();
     }
 

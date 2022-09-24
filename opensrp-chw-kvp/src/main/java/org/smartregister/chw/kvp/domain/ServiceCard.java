@@ -5,6 +5,8 @@ public class ServiceCard {
 
     private Integer actionItems;
 
+    private String id;
+
     private String serviceName;
 
     private String serviceStatus;
@@ -41,6 +43,14 @@ public class ServiceCard {
 
     public void setServiceStatus(String serviceStatus) {
         this.serviceStatus = serviceStatus;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getServiceId(){
+        return id;
     }
 
     public Integer getServiceIcon() {
