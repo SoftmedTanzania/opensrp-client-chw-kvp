@@ -13,6 +13,8 @@ public class ServiceCard {
 
     private Integer serviceIcon;
 
+    private String eventServiceName;
+
     public int getBackground() {
         return background;
     }
@@ -61,4 +63,11 @@ public class ServiceCard {
         this.serviceIcon = serviceIcon;
     }
 
+    public String getServiceEventName() {
+        return eventServiceName;
+    }
+
+    public void setEventServiceName(String eventServiceName) {
+        this.eventServiceName = eventServiceName;
+    }
 }

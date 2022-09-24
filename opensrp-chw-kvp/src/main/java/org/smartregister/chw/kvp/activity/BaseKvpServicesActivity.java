@@ -60,7 +60,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     protected void initializeRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        serviceCardAdapter = new BaseServiceCardAdapter(this, new ArrayList<>(), getServiceHandler());
+        serviceCardAdapter = new BaseServiceCardAdapter(this, new ArrayList<>(), getServiceHandler(), baseEntityId);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,6 +77,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         bioMedicalService.setServiceStatus("In-Progress");
         bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
         bioMedicalService.setBackground(R.drawable.purple_bg);
+        bioMedicalService.setEventServiceName(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
         serviceCards.add(bioMedicalService);
 
         ServiceCard behavioralService = new ServiceCard();
@@ -86,6 +87,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         behavioralService.setServiceStatus("Not Started");
         behavioralService.setServiceIcon(R.drawable.ic_behavioral);
         behavioralService.setBackground(R.drawable.orange_bg);
+        behavioralService.setEventServiceName(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
         serviceCards.add(behavioralService);
 
         ServiceCard structuralService = new ServiceCard();
@@ -95,6 +97,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         structuralService.setServiceStatus("Complete");
         structuralService.setServiceIcon(R.drawable.ic_structural);
         structuralService.setBackground(R.drawable.dark_blue_bg);
+        structuralService.setEventServiceName(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
         serviceCards.add(structuralService);
 
         ServiceCard otherService = new ServiceCard();
@@ -104,6 +107,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         otherService.setServiceStatus("Not Started");
         otherService.setServiceIcon(R.drawable.ic_others);
         otherService.setBackground(R.drawable.ocean_blue_bg);
+        otherService.setEventServiceName(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
         serviceCards.add(otherService);
 
         serviceCardAdapter.setServiceCards(serviceCards);

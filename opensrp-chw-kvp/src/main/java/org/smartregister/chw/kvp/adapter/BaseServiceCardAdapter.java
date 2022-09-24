@@ -21,13 +21,15 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
 
     private Context context;
     private List<ServiceCard> serviceCards;
+    private String baseEntityId;
 
     private View.OnClickListener clickListener;
 
-    public BaseServiceCardAdapter(Context context, List<ServiceCard> serviceCards, View.OnClickListener clickListener) {
+    public BaseServiceCardAdapter(Context context, List<ServiceCard> serviceCards, View.OnClickListener clickListener, String baseEntityId) {
         this.context = context;
         this.serviceCards = serviceCards;
         this.clickListener = clickListener;
+        this.baseEntityId = baseEntityId;
     }
 
     public void setServiceCards(List<ServiceCard> serviceCards) {
@@ -48,6 +50,8 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         holder.cardLayout.setBackgroundResource(serviceCard.getBackground());
         holder.cardLayout.setOnClickListener(clickListener);
         holder.cardLayout.setTag(serviceCard);
+        holder.cardLayout.setTag(R.id.BASE_ENTITY_ID, baseEntityId);
+
 
         holder.name.setText(serviceCard.getServiceName());
         holder.actionsCount.setText(context.getString(R.string.service_action_count, serviceCard.getActionItems()));
