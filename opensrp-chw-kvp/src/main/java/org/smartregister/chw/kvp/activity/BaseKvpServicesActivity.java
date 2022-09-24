@@ -1,5 +1,6 @@
 package org.smartregister.chw.kvp.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new android.os.Handler().postDelayed(this::initializeMainServiceContainers, 3000);
+        initializeMainServiceContainers();
     }
 
     protected void setupViews() {
@@ -76,6 +77,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         recyclerView.setAdapter(serviceCardAdapter);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     protected void initializeMainServiceContainers() {
         List<ServiceCard> serviceCards = new ArrayList<>();
 
@@ -116,6 +118,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCards.add(otherService);
 
         serviceCardAdapter.setServiceCards(serviceCards);
+        serviceCardAdapter.notifyDataSetChanged();
     }
 
     private String computeServiceStatus(String visitType) {
@@ -155,6 +158,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     @Override
     protected void onResumption() {
-        new android.os.Handler().postDelayed(this::initializeMainServiceContainers, 3000);
+        initializeMainServiceContainers();
     }
 }
