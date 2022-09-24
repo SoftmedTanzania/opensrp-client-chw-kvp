@@ -30,18 +30,25 @@ public class KvpVisitsUtil extends VisitUtils {
     private static void processVisits(VisitRepository visitRepository, VisitDetailsRepository visitDetailsRepository) throws Exception {
         List<Visit> visits = visitRepository.getAllUnSynced();
         List<Visit> bioMedicalServiceVisit = new ArrayList<>();
+        List<Visit> behavioralServiceVisits = new ArrayList<>();
 
         for (Visit v : visits) {
             Date truncatedUpdatedDate = new Date(v.getUpdatedAt().getTime() - v.getUpdatedAt().getTime() % (24 * 60 * 60 * 1000));
             Date today = new Date(Calendar.getInstance().getTimeInMillis() - Calendar.getInstance().getTimeInMillis() % (24 * 60 * 60 * 1000));
-            if (truncatedUpdatedDate.before(today) && v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT)) {
-                if (getBioMedicalStatus(v).equals(Complete)) {
+            if (truncatedUpdatedDate.before(today)) {
+                if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT) && getBioMedicalStatus(v).equals(Complete)) {
                     bioMedicalServiceVisit.add(v);
+                }
+                if(v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT) && getBehavioralServiceStatus(v).equals(Complete) ) {
+                    behavioralServiceVisits.add(v);
                 }
             }
         }
         if (bioMedicalServiceVisit.size() > 0) {
             processVisits(bioMedicalServiceVisit, visitRepository, visitDetailsRepository);
+        }
+        if(behavioralServiceVisits.size() >0){
+            processVisits(behavioralServiceVisits, visitRepository, visitDetailsRepository);
         }
     }
 
@@ -60,6 +67,21 @@ public class KvpVisitsUtil extends VisitUtils {
             completionObject.put("is-vmmc-done", computeCompletionStatus(obs, "vmcc_provided"));
             completionObject.put("is-tb_screening-done", computeCompletionStatus(obs, "tb_screening"));
             completionObject.put("is-cervical_cancer_screening-done", computeCompletionStatus(obs, "cervical_cancer_screening"));
+
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return getActionStatus(completionObject);
+    }
+
+    public static String getBehavioralServiceStatus(Visit lastVisit) {
+        HashMap<String, Boolean> completionObject = new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(lastVisit.getJson());
+            JSONArray obs = jsonObject.getJSONArray("obs");
+
+            completionObject.put("is-iec_sbcc-done", computeCompletionStatus(obs, "iec_sbcc_materials"));
+            completionObject.put("is-health_education-done", computeCompletionStatus(obs, "health_education_provided"));
 
         } catch (Exception e) {
             Timber.e(e);
