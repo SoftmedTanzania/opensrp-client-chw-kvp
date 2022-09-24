@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.smartregister.chw.kvp.KvpLibrary;
 import org.smartregister.chw.kvp.adapter.BaseServiceCardAdapter;
 import org.smartregister.chw.kvp.dao.KvpDao;
 import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.chw.kvp.domain.ServiceCard;
+import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.handlers.BaseServiceActionHandler;
 import org.smartregister.chw.kvp.util.Constants;
+import org.smartregister.chw.kvp.util.KvpVisitsUtil;
 import org.smartregister.kvp.R;
 import org.smartregister.view.activity.SecuredActivity;
 
@@ -49,6 +53,11 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeMainServiceContainers();
+    }
 
     protected void setupViews() {
         initializeRecyclerView();
@@ -73,7 +82,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard bioMedicalService = new ServiceCard();
         bioMedicalService.setServiceName(getString(R.string.bio_medical_services));
         bioMedicalService.setId(Constants.SERVICES.KVP_BIO_MEDICAL);
-        bioMedicalService.setServiceStatus("In-Progress");
+        bioMedicalService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT));
         bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
         bioMedicalService.setBackground(R.drawable.purple_bg);
         bioMedicalService.setEventServiceName(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
@@ -82,7 +91,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard behavioralService = new ServiceCard();
         behavioralService.setServiceName(getString(R.string.behavioral_services));
         behavioralService.setId(Constants.SERVICES.KVP_BEHAVIORAL);
-        behavioralService.setServiceStatus("Not Started");
+        behavioralService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT));
         behavioralService.setServiceIcon(R.drawable.ic_behavioral);
         behavioralService.setBackground(R.drawable.orange_bg);
         behavioralService.setEventServiceName(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
@@ -91,7 +100,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard structuralService = new ServiceCard();
         structuralService.setServiceName(getString(R.string.structural_services));
         structuralService.setId(Constants.SERVICES.KVP_STRUCTURAL);
-        structuralService.setServiceStatus("Complete");
+        structuralService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT));
         structuralService.setServiceIcon(R.drawable.ic_structural);
         structuralService.setBackground(R.drawable.dark_blue_bg);
         structuralService.setEventServiceName(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
@@ -100,13 +109,36 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard otherService = new ServiceCard();
         otherService.setServiceName(getString(R.string.other_services));
         otherService.setId(Constants.SERVICES.KVP_OTHERS);
-        otherService.setServiceStatus("Not Started");
+        otherService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT));
         otherService.setServiceIcon(R.drawable.ic_others);
         otherService.setBackground(R.drawable.ocean_blue_bg);
         otherService.setEventServiceName(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
         serviceCards.add(otherService);
 
         serviceCardAdapter.setServiceCards(serviceCards);
+    }
+
+    private String computeServiceStatus(String visitType) {
+        Visit lastVisit = getLatestVisit(visitType);
+        if (lastVisit != null && !lastVisit.getProcessed()) {
+            String visitStatus = "";
+            if (visitType.equals(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT)) {
+                visitStatus = KvpVisitsUtil.getBioMedicalStatus(lastVisit);
+            }
+            if(StringUtils.isNotBlank(visitStatus)){
+                int id = getResources().getIdentifier("service_status_"+ visitStatus, "string", getPackageName());
+                if(id == 0){
+                    return visitStatus;
+                }
+                return getString(id);
+            }
+            return getString(R.string.service_status_pending);
+        }
+        return getString(R.string.service_status_pending);
+    }
+
+    public Visit getLatestVisit(String visitType) {
+        return KvpLibrary.getInstance().visitRepository().getLatestVisit(baseEntityId, visitType);
     }
 
     public BaseServiceActionHandler getServiceHandler() {

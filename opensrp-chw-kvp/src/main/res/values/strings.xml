@@ -66,5 +66,8 @@
     <string name="behavioral_services">Behavioral Services</string>
     <string name="structural_services">Structural Services</string>
     <string name="other_services">Other Services</string>
+    <string name="service_status_pending">Not Started</string>
+    <string name="service_status_ongoing">In-Progress</string>
+    <string name="service_status_complete">Complete</string>
 
 </resources>
