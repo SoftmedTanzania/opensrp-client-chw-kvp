@@ -123,7 +123,7 @@ public class KvpVisitsUtil extends VisitUtils {
             JSONObject jsonObject = new JSONObject(lastVisit.getJson());
             JSONArray obs = jsonObject.getJSONArray("obs");
 
-            completionObject.put("is-other_services_and_referrals-done", computeCompletionStatus(obs, "health_education_provided"));
+            completionObject.put("is-other_services_and_referrals-done", computeCompletionStatus(obs, "other_services_referrals_provided"));
 
         } catch (Exception e) {
             Timber.e(e);
