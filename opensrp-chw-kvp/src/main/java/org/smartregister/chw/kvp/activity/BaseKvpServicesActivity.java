@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BaseKvpServicesActivity extends SecuredActivity {
     protected BaseServiceCardAdapter serviceCardAdapter;
-    protected BaseServiceActionHandler serviceActionHandler = new BaseServiceActionHandler();
     protected TextView tvTitle;
     protected MemberObject memberObject;
     protected String baseEntityId;
@@ -61,7 +60,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     protected void initializeRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        serviceCardAdapter = new BaseServiceCardAdapter(this, new ArrayList<>(), serviceActionHandler);
+        serviceCardAdapter = new BaseServiceCardAdapter(this, new ArrayList<>(), getServiceHandler());
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -104,6 +103,10 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCards.add(otherService);
 
         serviceCardAdapter.setServiceCards(serviceCards);
+    }
+
+    public BaseServiceActionHandler getServiceHandler(){
+        return new BaseServiceActionHandler();
     }
 
     @Override
