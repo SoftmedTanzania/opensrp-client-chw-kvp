@@ -15,10 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.smartregister.chw.kvp.KvpLibrary;
 import org.smartregister.chw.kvp.contract.KvpProfileContract;
 import org.smartregister.chw.kvp.custom_views.BaseKvpFloatingMenu;
 import org.smartregister.chw.kvp.dao.KvpDao;
 import org.smartregister.chw.kvp.domain.MemberObject;
+import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.interactor.BaseKvpProfileInteractor;
 import org.smartregister.chw.kvp.presenter.BaseKvpProfilePresenter;
 import org.smartregister.chw.kvp.util.Constants;
@@ -64,6 +66,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected RelativeLayout rlKvpPositiveDate;
     protected TextView textViewVisitDone;
     protected RelativeLayout visitDone;
+    protected RelativeLayout visitInProgress;
+    protected TextView textViewContinue;
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
@@ -130,6 +134,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewRecordAnc = findViewById(R.id.textview_record_anc);
         textViewUndo = findViewById(R.id.textview_undo);
         imageView = findViewById(R.id.imageview_profile);
+        visitInProgress = findViewById(R.id.record_visit_in_progress);
+        textViewContinue = findViewById(R.id.textview_continue);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -140,6 +146,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewRecordKvp.setOnClickListener(this);
         textViewRecordAnc.setOnClickListener(this);
         textViewUndo.setOnClickListener(this);
+        textViewContinue.setOnClickListener(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
         if (StringUtils.isNotBlank(profileType) && profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
@@ -154,11 +161,23 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         setupViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupViews();
+    }
+
+    @Override
+    protected void onResumption() {
+        super.onResumption();
+        setupViews();
+    }
+
     private int getToolbarTitle(String profileType) {
-        if(profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)){
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
             return R.string.return_to_kvp_clients;
         }
-        if(profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)){
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
             return R.string.return_to_prep_clients;
         }
         return R.string.return_to_kvp_prep_clients;
@@ -169,6 +188,13 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         initializeFloatingMenu();
         recordAnc(memberObject);
         recordPnc(memberObject);
+        if (isVisitOnProgress()) {
+            textViewRecordKvp.setVisibility(View.GONE);
+            visitInProgress.setVisibility(View.VISIBLE);
+        } else {
+            textViewRecordKvp.setVisibility(View.VISIBLE);
+            visitInProgress.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -192,7 +218,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             this.openUpcomingService();
         } else if (id == R.id.rlFamilyServicesDue) {
             this.openFamilyDueServices();
-        } else if (id == R.id.textview_record_kvp) {
+        } else if (id == R.id.textview_record_kvp || id == R.id.textview_continue) {
             this.openFollowupVisit();
         }
     }
@@ -336,5 +362,23 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             profilePresenter.saveForm(data.getStringExtra(Constants.JSON_FORM_EXTRA.JSON));
             finish();
         }
+    }
+
+    protected boolean isVisitOnProgress() {
+        Visit bioMedicalVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
+        Visit behavioralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
+        Visit structuralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
+        Visit otherServiceVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
+
+        if (bioMedicalVisit != null && !bioMedicalVisit.getProcessed()) {
+            return true;
+        }
+        if (behavioralVisit != null && !behavioralVisit.getProcessed()) {
+            return true;
+        }
+        if (structuralVisit != null && !structuralVisit.getProcessed()) {
+            return true;
+        }
+        return otherServiceVisit != null && !otherServiceVisit.getProcessed();
     }
 }
