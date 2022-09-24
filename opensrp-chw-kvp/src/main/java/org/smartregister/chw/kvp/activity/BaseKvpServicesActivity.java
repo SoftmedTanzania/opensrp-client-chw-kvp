@@ -73,7 +73,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard bioMedicalService = new ServiceCard();
         bioMedicalService.setServiceName(getString(R.string.bio_medical_services));
         bioMedicalService.setId(Constants.SERVICES.KVP_BIO_MEDICAL);
-        bioMedicalService.setActionItems(20);
         bioMedicalService.setServiceStatus("In-Progress");
         bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
         bioMedicalService.setBackground(R.drawable.purple_bg);
@@ -83,7 +82,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard behavioralService = new ServiceCard();
         behavioralService.setServiceName(getString(R.string.behavioral_services));
         behavioralService.setId(Constants.SERVICES.KVP_BEHAVIORAL);
-        behavioralService.setActionItems(20);
         behavioralService.setServiceStatus("Not Started");
         behavioralService.setServiceIcon(R.drawable.ic_behavioral);
         behavioralService.setBackground(R.drawable.orange_bg);
@@ -93,7 +91,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard structuralService = new ServiceCard();
         structuralService.setServiceName(getString(R.string.structural_services));
         structuralService.setId(Constants.SERVICES.KVP_STRUCTURAL);
-        structuralService.setActionItems(20);
         structuralService.setServiceStatus("Complete");
         structuralService.setServiceIcon(R.drawable.ic_structural);
         structuralService.setBackground(R.drawable.dark_blue_bg);
@@ -103,7 +100,6 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         ServiceCard otherService = new ServiceCard();
         otherService.setServiceName(getString(R.string.other_services));
         otherService.setId(Constants.SERVICES.KVP_OTHERS);
-        otherService.setActionItems(20);
         otherService.setServiceStatus("Not Started");
         otherService.setServiceIcon(R.drawable.ic_others);
         otherService.setBackground(R.drawable.ocean_blue_bg);
