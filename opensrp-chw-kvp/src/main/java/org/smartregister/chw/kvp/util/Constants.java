@@ -45,6 +45,14 @@ public interface Constants {
         String KVP_CLIENT_STATUS = "kvp_client_status";
         String KVP_CONDOM_PROVISION = "kvp_condom_provision";
         String KVP_HTS = "kvp_hts";
+        String KVP_PrEP_PEP = "kvp_prep_pep";
+        String KVP_HEPATITIS = "kvp_hepatitis";
+        String KVP_STI_SCREENING = "kvp_sti_screening";
+        String KVP_FAMILY_PLANNING_SERVICES = "kvp_family_planning_services";
+        String KVP_MAT = "kvp_mat";
+        String KVP_VMMC_SERVICES = "kvp_vmmc_services";
+        String KVP_TB_INVESTIGATION = "kvp_tb_investigation";
+        String KVP_CERVICAL_CANCER_SCREENING = "kvp_cervical_cancer_screening";
     }
 
     interface TABLES {
