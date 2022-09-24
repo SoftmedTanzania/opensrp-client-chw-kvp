@@ -57,6 +57,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         if(serviceCard.getActionItems()!= null){
             holder.actionsCount.setText(context.getString(R.string.service_action_count, serviceCard.getActionItems()));
         }
+        holder.visitCount.setText(context.getString(R.string.service_visit_count, serviceCard.getVisitsCount()));
         holder.servicesStatus.setText(context.getString(R.string.service_status, serviceCard.getServiceStatus()));
         if(serviceCard.getServiceStatus().equalsIgnoreCase("Complete")){
             holder.processVisitBtn.setVisibility(View.VISIBLE);
@@ -83,6 +84,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         public TextView servicesStatus;
         public Button processVisitBtn;
         public ImageView serviceIcon;
+        public TextView visitCount;
 
 
         public ViewHolder(View view) {
@@ -93,6 +95,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
             servicesStatus = view.findViewById(R.id.service_status);
             processVisitBtn = view.findViewById(R.id.process_visit);
             serviceIcon = view.findViewById(R.id.service_icon);
+            visitCount = view.findViewById(R.id.visit_count);
         }
     }
 }

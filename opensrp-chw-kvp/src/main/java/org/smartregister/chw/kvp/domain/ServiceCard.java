@@ -13,6 +13,8 @@ public class ServiceCard {
 
     private Integer serviceIcon;
 
+    private Integer visitsCount;
+
     private String eventServiceName;
 
     public int getBackground() {
@@ -69,5 +71,13 @@ public class ServiceCard {
 
     public void setEventServiceName(String eventServiceName) {
         this.eventServiceName = eventServiceName;
+    }
+
+    public Integer getVisitsCount() {
+        return visitsCount;
+    }
+
+    public void setVisitsCount(Integer visitsCount) {
+        this.visitsCount = visitsCount;
     }
 }

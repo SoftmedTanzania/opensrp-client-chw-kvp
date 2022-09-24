@@ -87,6 +87,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         bioMedicalService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT));
         bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
         bioMedicalService.setBackground(R.drawable.purple_bg);
+        bioMedicalService.setVisitsCount(getVisitCount(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT));
         bioMedicalService.setEventServiceName(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
         serviceCards.add(bioMedicalService);
 
@@ -96,6 +97,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         behavioralService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT));
         behavioralService.setServiceIcon(R.drawable.ic_behavioral);
         behavioralService.setBackground(R.drawable.orange_bg);
+        behavioralService.setVisitsCount(getVisitCount(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT));
         behavioralService.setEventServiceName(Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
         serviceCards.add(behavioralService);
 
@@ -105,6 +107,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         structuralService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT));
         structuralService.setServiceIcon(R.drawable.ic_structural);
         structuralService.setBackground(R.drawable.dark_blue_bg);
+        structuralService.setVisitsCount(getVisitCount(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT));
         structuralService.setEventServiceName(Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
         serviceCards.add(structuralService);
 
@@ -114,6 +117,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         otherService.setServiceStatus(computeServiceStatus(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT));
         otherService.setServiceIcon(R.drawable.ic_others);
         otherService.setBackground(R.drawable.ocean_blue_bg);
+        otherService.setVisitsCount(getVisitCount(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT));
         otherService.setEventServiceName(Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
         serviceCards.add(otherService);
 
@@ -151,6 +155,11 @@ public class BaseKvpServicesActivity extends SecuredActivity {
 
     public Visit getLatestVisit(String visitType) {
         return KvpLibrary.getInstance().visitRepository().getLatestVisit(baseEntityId, visitType);
+    }
+
+    public int getVisitCount(String visitType) {
+        List<Visit> processedVisits = KvpLibrary.getInstance().visitRepository().getAllVisitsProcessed(visitType, baseEntityId);
+        return processedVisits.size();
     }
 
     public BaseServiceActionHandler getServiceHandler() {

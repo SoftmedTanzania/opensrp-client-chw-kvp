@@ -61,6 +61,7 @@
     <string name="kvp_prep_registration">KVP/PrEP Registration</string>
     <string name="service_status">Status: %s</string>
     <string name="service_action_count">Actions: %d</string>
+    <string name="service_visit_count">Visits: %d</string>
     <string name="process_visit">Process Visit</string>
     <string name="bio_medical_services">Bio-Medical Services</string>
     <string name="behavioral_services">Behavioral Services</string>
