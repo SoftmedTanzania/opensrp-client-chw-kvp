@@ -9,6 +9,8 @@ public class ServiceCard {
 
     private String serviceStatus;
 
+    private Integer serviceIcon;
+
     public int getBackground() {
         return background;
     }
@@ -39,6 +41,14 @@ public class ServiceCard {
 
     public void setServiceStatus(String serviceStatus) {
         this.serviceStatus = serviceStatus;
+    }
+
+    public Integer getServiceIcon() {
+        return serviceIcon;
+    }
+
+    public void setServiceIcon(Integer serviceIcon) {
+        this.serviceIcon = serviceIcon;
     }
 
 }

@@ -1,10 +1,12 @@
 package org.smartregister.chw.kvp.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +55,11 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         if(serviceCard.getServiceStatus().equalsIgnoreCase("Complete")){
             holder.processVisitBtn.setVisibility(View.VISIBLE);
         }
+        if(serviceCard.getServiceIcon()!= null){
+            Drawable service_icon = context.getResources().getDrawable(serviceCard.getServiceIcon());
+            if(service_icon != null)
+                holder.serviceIcon.setImageDrawable(service_icon);
+        }
     }
 
     @Override
@@ -66,6 +73,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         public TextView actionsCount;
         public TextView servicesStatus;
         public Button processVisitBtn;
+        public ImageView serviceIcon;
 
 
         public ViewHolder(View view) {
@@ -75,6 +83,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
             actionsCount = view.findViewById(R.id.actions_count);
             servicesStatus = view.findViewById(R.id.service_status);
             processVisitBtn = view.findViewById(R.id.process_visit);
+            serviceIcon = view.findViewById(R.id.service_icon);
         }
     }
 }

@@ -75,28 +75,32 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         bioMedicalService.setServiceName("Bio-Medical Services");
         bioMedicalService.setActionItems(20);
         bioMedicalService.setServiceStatus("In-Progress");
-        bioMedicalService.setBackground(R.drawable.ic_bio_medical_services_bg);
+        bioMedicalService.setServiceIcon(R.drawable.ic_bio_medical);
+        bioMedicalService.setBackground(R.drawable.purple_bg);
         serviceCards.add(bioMedicalService);
 
         ServiceCard behavioralService = new ServiceCard();
         behavioralService.setServiceName("Behavioral Services");
         behavioralService.setActionItems(20);
         behavioralService.setServiceStatus("Not Started");
-        behavioralService.setBackground(R.drawable.ic_behavioral_services_bg);
+        behavioralService.setServiceIcon(R.drawable.ic_behavioral);
+        behavioralService.setBackground(R.drawable.orange_bg);
         serviceCards.add(behavioralService);
 
         ServiceCard structuralService = new ServiceCard();
         structuralService.setServiceName("Structural Services");
         structuralService.setActionItems(20);
         structuralService.setServiceStatus("Complete");
-        structuralService.setBackground(R.drawable.ic_structural_services_bg);
+        structuralService.setServiceIcon(R.drawable.ic_structural);
+        structuralService.setBackground(R.drawable.dark_blue_bg);
         serviceCards.add(structuralService);
 
         ServiceCard otherService = new ServiceCard();
         otherService.setServiceName("Other Services");
         otherService.setActionItems(20);
         otherService.setServiceStatus("Not Started");
-        otherService.setBackground(R.drawable.ic_other_services_bg);
+        otherService.setServiceIcon(R.drawable.ic_others);
+        otherService.setBackground(R.drawable.ocean_blue_bg);
         serviceCards.add(otherService);
 
         serviceCardAdapter.setServiceCards(serviceCards);
