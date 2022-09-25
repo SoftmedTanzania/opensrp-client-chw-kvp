@@ -61,15 +61,21 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         holder.visitCount.setText(context.getString(R.string.service_visit_count, serviceCard.getVisitsCount()));
         holder.servicesStatus.setText(context.getString(R.string.service_status, serviceCard.getServiceStatus()));
         if (serviceCard.getServiceStatus().equalsIgnoreCase(context.getString(R.string.service_status_complete))) {
+            holder.serviceStatusIcon.setVisibility(View.VISIBLE);
             holder.processVisitBtn.setVisibility(View.VISIBLE);
             holder.processVisitBtn.setOnClickListener(clickListener);
             holder.processVisitBtn.setTag(serviceCard);
             holder.processVisitBtn.setTag(R.id.BASE_ENTITY_ID, baseEntityId);
+            holder.serviceStatusIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_service_status_complete));
         }
         if (serviceCard.getServiceStatus().equalsIgnoreCase(context.getString(R.string.service_status_processed))) {
-            holder.cardLayout.setOnClickListener(v -> {
-                Toast.makeText(v.getContext(), context.getString(R.string.visit_processed_message), Toast.LENGTH_LONG).show();
-            });
+            holder.serviceStatusIcon.setVisibility(View.VISIBLE);
+            holder.serviceStatusIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_service_status_processed));
+            holder.cardLayout.setOnClickListener(v -> Toast.makeText(v.getContext(), context.getString(R.string.visit_processed_message), Toast.LENGTH_LONG).show());
+        }
+        if(serviceCard.getServiceStatus().equalsIgnoreCase(context.getString(R.string.service_status_ongoing))){
+            holder.serviceStatusIcon.setVisibility(View.VISIBLE);
+            holder.serviceStatusIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_service_status_in_progress));
         }
         if (serviceCard.getServiceIcon() != null) {
             Drawable service_icon = context.getResources().getDrawable(serviceCard.getServiceIcon());
@@ -91,6 +97,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
         public Button processVisitBtn;
         public ImageView serviceIcon;
         public TextView visitCount;
+        public ImageView serviceStatusIcon;
 
 
         public ViewHolder(View view) {
@@ -102,6 +109,7 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
             processVisitBtn = view.findViewById(R.id.process_visit);
             serviceIcon = view.findViewById(R.id.service_icon);
             visitCount = view.findViewById(R.id.visit_count);
+            serviceStatusIcon = view.findViewById(R.id.service_status_icon);
         }
     }
 }
