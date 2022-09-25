@@ -74,5 +74,7 @@
     <string name="process_visit_message">Processing this visit will save this into the database and you won\'t be able to make edits, This visit however will process automatically on the day change</string>
     <string name="kvp_visit_in_progress">Visit In Progress</string>
     <string name="continue_visit">Continue</string>
+    <string name="service_status_processed">Processed</string>
+    <string name="visit_processed_message">Visit is Processed, You can perform another visit after 30 minutes from when this visit was processed</string>
 
 </resources>

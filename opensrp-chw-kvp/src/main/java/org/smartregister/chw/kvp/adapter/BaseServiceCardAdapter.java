@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.smartregister.chw.kvp.domain.ServiceCard;
@@ -54,20 +55,25 @@ public class BaseServiceCardAdapter extends RecyclerView.Adapter<BaseServiceCard
 
 
         holder.name.setText(serviceCard.getServiceName());
-        if(serviceCard.getActionItems()!= null){
+        if (serviceCard.getActionItems() != null) {
             holder.actionsCount.setText(context.getString(R.string.service_action_count, serviceCard.getActionItems()));
         }
         holder.visitCount.setText(context.getString(R.string.service_visit_count, serviceCard.getVisitsCount()));
         holder.servicesStatus.setText(context.getString(R.string.service_status, serviceCard.getServiceStatus()));
-        if(serviceCard.getServiceStatus().equalsIgnoreCase("Complete")){
+        if (serviceCard.getServiceStatus().equalsIgnoreCase(context.getString(R.string.service_status_complete))) {
             holder.processVisitBtn.setVisibility(View.VISIBLE);
             holder.processVisitBtn.setOnClickListener(clickListener);
             holder.processVisitBtn.setTag(serviceCard);
             holder.processVisitBtn.setTag(R.id.BASE_ENTITY_ID, baseEntityId);
         }
-        if(serviceCard.getServiceIcon()!= null){
+        if (serviceCard.getServiceStatus().equalsIgnoreCase(context.getString(R.string.service_status_processed))) {
+            holder.cardLayout.setOnClickListener(v -> {
+                Toast.makeText(v.getContext(), context.getString(R.string.visit_processed_message), Toast.LENGTH_LONG).show();
+            });
+        }
+        if (serviceCard.getServiceIcon() != null) {
             Drawable service_icon = context.getResources().getDrawable(serviceCard.getServiceIcon());
-            if(service_icon != null)
+            if (service_icon != null)
                 holder.serviceIcon.setImageDrawable(service_icon);
         }
     }

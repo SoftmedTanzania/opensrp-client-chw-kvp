@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 import org.smartregister.chw.kvp.KvpLibrary;
 import org.smartregister.chw.kvp.adapter.BaseServiceCardAdapter;
 import org.smartregister.chw.kvp.dao.KvpDao;
@@ -149,6 +151,14 @@ public class BaseKvpServicesActivity extends SecuredActivity {
                 return getString(id);
             }
             return getString(R.string.service_status_pending);
+        }
+        if (lastVisit != null && lastVisit.getProcessed()) {
+            DateTime time = new DateTime(lastVisit.getUpdatedAt());
+            DateTime now = new DateTime();
+            int diffMin = Minutes.minutesBetween(time, now).getMinutes();
+            if (diffMin < 30) {
+                return getString(R.string.service_status_processed);
+            }
         }
         return getString(R.string.service_status_pending);
     }
