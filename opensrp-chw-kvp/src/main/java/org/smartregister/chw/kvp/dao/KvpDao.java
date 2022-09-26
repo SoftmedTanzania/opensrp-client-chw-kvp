@@ -23,6 +23,58 @@ public class KvpDao extends AbstractDao {
         return res.get(0) > 0;
     }
 
+    public static boolean isRegisteredForKvp(String baseEntityID) {
+        String sql = "SELECT count(p.base_entity_id) count FROM ec_kvp_register p " +
+                "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
+
+        DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "count");
+
+        List<Integer> res = readData(sql, dataMap);
+        if (res == null || res.size() != 1)
+            return false;
+
+        return res.get(0) > 0;
+    }
+
+    public static boolean isRegisteredForPrEP(String baseEntityID) {
+        String sql = "SELECT count(p.base_entity_id) count FROM ec_prep_register p " +
+                "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
+
+        DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "count");
+
+        List<Integer> res = readData(sql, dataMap);
+        if (res == null || res.size() != 1)
+            return false;
+
+        return res.get(0) > 0;
+    }
+
+    public static boolean isClientEligibleForPrEPFromScreening(String baseEntityID){
+        String sql = "SELECT prep_qualified FROM ec_kvp_register p " +
+                "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_qualified");
+
+        List<String> res = readData(sql, dataMap);
+        if(res != null && res.size() != 0 && res.get(0)!= null){
+            return res.get(0).equalsIgnoreCase("yes");
+        }
+        return false;
+    }
+
+    public static boolean isClientHTSResultsNegative(String baseEntityID){
+        String sql = "SELECT hiv_status FROM ec_kvp_register p " +
+                " WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "hiv_status");
+
+        List<String> res = readData(sql, dataMap);
+        if(res != null && res.size() != 0 && res.get(0)!= null){
+            return res.get(0).equalsIgnoreCase("negative");
+        }
+        return false;
+    }
+
     public static MemberObject getMember(String baseEntityID) {
         String sql = "select m.base_entity_id,\n" +
                 "       m.unique_id,\n" +

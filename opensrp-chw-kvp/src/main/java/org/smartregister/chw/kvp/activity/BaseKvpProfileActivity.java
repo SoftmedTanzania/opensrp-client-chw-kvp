@@ -53,6 +53,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected TextView textViewRecordKvp;
     protected TextView textViewRecordAnc;
     protected TextView textview_positive_date;
+    protected TextView textview_register;
+    protected RelativeLayout pendingPrEPRegistration;
     protected View view_last_visit_row;
     protected View view_most_due_overdue_row;
     protected View view_family_row;
@@ -136,6 +138,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         imageView = findViewById(R.id.imageview_profile);
         visitInProgress = findViewById(R.id.record_visit_in_progress);
         textViewContinue = findViewById(R.id.textview_continue);
+        textview_register = findViewById(R.id.textview_register);
+        pendingPrEPRegistration = findViewById(R.id.record_prep_registration);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -147,6 +151,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewRecordAnc.setOnClickListener(this);
         textViewUndo.setOnClickListener(this);
         textViewContinue.setOnClickListener(this);
+        textview_register.setOnClickListener(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
         if (StringUtils.isNotBlank(profileType) && profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
@@ -188,13 +193,30 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         initializeFloatingMenu();
         recordAnc(memberObject);
         recordPnc(memberObject);
-        if (isVisitOnProgress()) {
+        if (isPrEPRegistrationPending()) {
             textViewRecordKvp.setVisibility(View.GONE);
-            visitInProgress.setVisibility(View.VISIBLE);
-        } else {
-            textViewRecordKvp.setVisibility(View.VISIBLE);
             visitInProgress.setVisibility(View.GONE);
+            pendingPrEPRegistration.setVisibility(View.VISIBLE);
+        } else {
+            pendingPrEPRegistration.setVisibility(View.GONE);
+            if (isVisitOnProgress()) {
+                textViewRecordKvp.setVisibility(View.GONE);
+                visitInProgress.setVisibility(View.VISIBLE);
+            } else {
+                textViewRecordKvp.setVisibility(View.VISIBLE);
+                visitInProgress.setVisibility(View.GONE);
+            }
         }
+    }
+
+    protected boolean isPrEPRegistrationPending() {
+        boolean screeningEligible = KvpDao.isClientEligibleForPrEPFromScreening(memberObject.getBaseEntityId());
+        boolean htsNegative = KvpDao.isClientHTSResultsNegative(memberObject.getBaseEntityId());
+        boolean isPrEPMember = KvpDao.isRegisteredForPrEP(memberObject.getBaseEntityId());
+        //if the client on screening was eligible for PrEP and
+        //if the client on bio-medical services hts results was negative
+        //and if the client does not exist on the PrEP register
+        return screeningEligible && htsNegative && !isPrEPMember;
     }
 
     @Override
@@ -220,7 +242,13 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             this.openFamilyDueServices();
         } else if (id == R.id.textview_record_kvp || id == R.id.textview_continue) {
             this.openFollowupVisit();
+        }else if(id == R.id.textview_pending_registration){
+            this.startPrEPRegistration();
         }
+    }
+
+    protected void startPrEPRegistration() {
+        //Override
     }
 
     @Override

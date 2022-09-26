@@ -76,5 +76,7 @@
     <string name="continue_visit">Continue</string>
     <string name="service_status_processed">Processed</string>
     <string name="visit_processed_message">Visit is Processed, You can perform another visit after 30 minutes from when this visit was processed</string>
+    <string name="pending_prep_registration">Pending PrEP Registration</string>
+    <string name="register_to_service">Register</string>
 
 </resources>
