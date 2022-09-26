@@ -188,11 +188,19 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         return R.string.return_to_kvp_prep_clients;
     }
 
+    private int getServiceBtnText(String profileType) {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            return R.string.record_prep;
+        }
+        return R.string.record_kvp;
+    }
+
     @Override
     protected void setupViews() {
         initializeFloatingMenu();
         recordAnc(memberObject);
         recordPnc(memberObject);
+        textViewRecordKvp.setText(getServiceBtnText(profileType));
         if (isPrEPRegistrationPending()) {
             textViewRecordKvp.setVisibility(View.GONE);
             visitInProgress.setVisibility(View.GONE);
@@ -242,7 +250,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             this.openFamilyDueServices();
         } else if (id == R.id.textview_record_kvp || id == R.id.textview_continue) {
             this.openFollowupVisit();
-        }else if(id == R.id.textview_register){
+        } else if (id == R.id.textview_register) {
             this.startPrEPRegistration();
         }
     }
