@@ -35,10 +35,10 @@ public interface Constants {
 
     interface FORMS {
         String KVP_PrEP_REGISTRATION = "kvp_prep_registration";
-        String KVP_REGISTRATION = "kvp_confirmation";
         String KVP_FOLLOW_UP_VISIT = "kvp_followup_visit";
         String KVP_SCREENING_MALE = "kvp_screening_male";
         String KVP_SCREENING_FEMALE = "kvp_screening_female";
+        String PrEP_REGISTRATION = "prep_registration";
     }
 
     interface KVP_PrEP_FOLLOWUP_FORMS {
