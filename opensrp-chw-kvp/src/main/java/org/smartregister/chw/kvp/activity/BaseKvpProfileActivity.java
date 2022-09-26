@@ -22,6 +22,7 @@ import org.smartregister.chw.kvp.dao.KvpDao;
 import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.interactor.BaseKvpProfileInteractor;
+import org.smartregister.chw.kvp.listener.OnClickFloatingMenu;
 import org.smartregister.chw.kvp.presenter.BaseKvpProfilePresenter;
 import org.smartregister.chw.kvp.util.Constants;
 import org.smartregister.chw.kvp.util.KvpUtil;
@@ -164,6 +165,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         initializePresenter();
         profilePresenter.fillProfileData(memberObject);
         setupViews();
+        initializeFloatingMenu();
     }
 
     @Override
@@ -197,7 +199,6 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
 
     @Override
     protected void setupViews() {
-        initializeFloatingMenu();
         recordAnc(memberObject);
         recordPnc(memberObject);
         textViewRecordKvp.setText(getServiceBtnText(profileType));
@@ -267,15 +268,46 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         profilePresenter.refreshProfileBottom();
     }
 
+
     public void initializeFloatingMenu() {
-        if (StringUtils.isNotBlank(memberObject.getPhoneNumber())) {
-            baseKvpFloatingMenu = new BaseKvpFloatingMenu(this, memberObject);
-            baseKvpFloatingMenu.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            addContentView(baseKvpFloatingMenu, linearLayoutParams);
+        baseKvpFloatingMenu = new BaseKvpFloatingMenu(this, memberObject);
+        checkPhoneNumberProvided(StringUtils.isNotBlank(memberObject.getPhoneNumber()));
+        if (showReferralView()) {
+            baseKvpFloatingMenu.findViewById(R.id.refer_to_facility_layout).setVisibility(View.VISIBLE);
+        } else {
+            baseKvpFloatingMenu.findViewById(R.id.refer_to_facility_layout).setVisibility(View.GONE);
         }
+        OnClickFloatingMenu onClickFloatingMenu = viewId -> {
+            if (viewId == R.id.kvp_fab) {//Animates the actual FAB
+                baseKvpFloatingMenu.animateFAB();
+            } else if (viewId == R.id.call_layout) {
+                baseKvpFloatingMenu.launchCallWidget();
+                baseKvpFloatingMenu.animateFAB();
+            } else if (viewId == R.id.refer_to_facility_layout) {
+                startReferralForm();
+            } else {
+                Timber.d("Unknown FAB action");
+            }
+        };
+
+        baseKvpFloatingMenu.setFloatMenuClickListener(onClickFloatingMenu);
+        baseKvpFloatingMenu.setGravity(Gravity.BOTTOM | Gravity.END);
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        addContentView(baseKvpFloatingMenu, linearLayoutParams);
+    }
+
+    private void checkPhoneNumberProvided(boolean hasPhoneNumber) {
+        BaseKvpFloatingMenu.redrawWithOption(baseKvpFloatingMenu, hasPhoneNumber);
+    }
+
+    protected boolean showReferralView() {
+        //in chw return true; in hf return false;
+        return false;
+    }
+
+    public void startReferralForm() {
+        //implement in chw
     }
 
     @Override
