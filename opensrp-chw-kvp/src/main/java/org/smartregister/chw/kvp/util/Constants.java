@@ -76,6 +76,9 @@ public interface Constants {
 
     interface PrEP_FOLLOWUP_FORMS {
         String VISIT_TYPE = "prep_visit_type";
+        String SCREENING = "prep_screening";
+        String INITIATION = "prep_initiation";
+        String OTHER_SERVICES = "prep_other_services";
     }
 
     interface TABLES {
