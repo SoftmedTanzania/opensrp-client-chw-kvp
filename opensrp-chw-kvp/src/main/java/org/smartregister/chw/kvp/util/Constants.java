@@ -24,6 +24,7 @@ public interface Constants {
     interface EVENT_TYPE {
         String KVP_PrEP_REGISTRATION = "KVP PrEP Registration";
         String KVP_PrEP_FOLLOW_UP_VISIT = "Kvp PrEP Follow-up Visit";
+        String PrEP_FOLLOWUP_VISIT = "PrEP FFollow-up Visit";
         String KVP_REGISTRATION = "KVP Registration";
         String PrEP_REGISTRATION = "PrEP Registration";
         String VOID_EVENT = "Void Event";
@@ -73,12 +74,17 @@ public interface Constants {
         String KVP_OTHER_SERVICES_REFERRALS = "kvp_other_services_and_referrals";
     }
 
+    interface PrEP_FOLLOWUP_FORMS {
+        String VISIT_TYPE = "prep_visit_type";
+    }
+
     interface TABLES {
         String KVP_PrEP_REGISTER = "ec_kvp_prep_register";
         String KVP_PrEP_FOLLOWUP = "ec_kvp_prep_followup";
         String KVP_REGISTER = "ec_kvp_register";
         String PrEP_REGISTER = "ec_prep_register";
-        String KVP_FOLLOW_UP = "ec_kvp_follow_up_visit";
+        String KVP_FOLLOW_UP = "ec_kvp_followup";
+        String PrEP_FOLLOWUP = "ec_prep_followup";
     }
 
     interface ACTIVITY_PAYLOAD {
