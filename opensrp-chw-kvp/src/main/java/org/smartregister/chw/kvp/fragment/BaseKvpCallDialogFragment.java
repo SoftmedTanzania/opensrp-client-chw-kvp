@@ -69,7 +69,7 @@ public class BaseKvpCallDialogFragment extends DialogFragment implements BaseKvp
     private void setCallTitle(ViewGroup rootView, int viewId, final String message) {
         TextView callTitle = rootView.findViewById(viewId);
         if (MEMBER_OBJECT.getBaseEntityId().equals(MEMBER_OBJECT.getFamilyHead())) {
-            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_family_head)));
+            callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_kvp_client)));
         } else if ("0".equals(MEMBER_OBJECT.getAncMember())) {
             callTitle.setText(String.format("%s %s", message, getResources().getString(R.string.call_anc_client)));
         } else if (MEMBER_OBJECT.getBaseEntityId().equals(MEMBER_OBJECT.getPrimaryCareGiver())) {
@@ -102,7 +102,7 @@ public class BaseKvpCallDialogFragment extends DialogFragment implements BaseKvp
                 TextView kvpClientNameTextView = rootView.findViewById(R.id.call_kvp_client_name);
                 kvpClientNameTextView.setText(String.format("%s %s %s", MEMBER_OBJECT.getFirstName(), MEMBER_OBJECT.getMiddleName(), MEMBER_OBJECT.getLastName()));
 
-                setCallTitle(rootView, R.id.call_kvp_client_title, "");
+                setCallTitle(rootView, R.id.call_kvp_client_title, getResources().getString(R.string.call));
                 TextView callKvpClientPhone = rootView.findViewById(R.id.call_kvp_client_phone);
                 callKvpClientPhone.setTag(MEMBER_OBJECT.getPhoneNumber());
                 callKvpClientPhone.setText(getName(getCurrentContext().getString(R.string.call), MEMBER_OBJECT.getPhoneNumber()));

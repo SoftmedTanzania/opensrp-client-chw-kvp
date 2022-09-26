@@ -29,7 +29,7 @@
     <string name="vaccine_service_upcoming"><![CDATA[%1$s <font color=#7f7f7f>inakaribia (%2$s)</font></b>]]></string>
     <string name="vaccine_service_overdue"><![CDATA[%1$s <font color=#f04646>muda umepita (%2$s)</font></b>]]></string>
     <string name="vaccine_service_due"><![CDATA[%1$s <font color=#000000>imefika (%2$s)</font></b>]]></string>
-    <string name="call_kvp_client">Mteja wa Kvp</string>
+    <string name="call_kvp_client">Mteja wa KVP/PrEP</string>
     <string name="head_of_family">Mkuu wa kaya</string>
     <string name="kvp_client">Mteja wa kvp</string>
     <string name="copy_to_clipboard">Nakili namba ya simu</string>
