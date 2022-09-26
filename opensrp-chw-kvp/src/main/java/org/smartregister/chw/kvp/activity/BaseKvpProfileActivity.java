@@ -242,7 +242,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             this.openFamilyDueServices();
         } else if (id == R.id.textview_record_kvp || id == R.id.textview_continue) {
             this.openFollowupVisit();
-        }else if(id == R.id.textview_pending_registration){
+        }else if(id == R.id.textview_register){
             this.startPrEPRegistration();
         }
     }
