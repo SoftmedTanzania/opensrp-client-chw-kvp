@@ -127,6 +127,7 @@ public class BaseKvpServicesActivity extends SecuredActivity {
         serviceCardAdapter.notifyDataSetChanged();
     }
 
+    //TODO: cleanup -> move files to follow pattern
     private String computeServiceStatus(String visitType) {
         Visit lastVisit = getLatestVisit(visitType);
         if (lastVisit != null && !lastVisit.getProcessed()) {
