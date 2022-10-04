@@ -164,8 +164,8 @@ public class KvpUtil {
         // the last two letters from the first and last name of the client
         UIC_ID += firstName.length() > 2 ? firstName.substring(firstName.length() - 2) : firstName;
         UIC_ID += lastName.length() > 2 ? lastName.substring(lastName.length() - 2) : lastName;
-        // first two letters from the client's region of birth
-        UIC_ID += birthLocation.length() > 2 ? birthLocation.substring(0, 2) : birthLocation;
+        // first three letters from the client's region of birth
+        UIC_ID += birthLocation.length() > 3 ? birthLocation.substring(0, 3) : birthLocation;
         //if the client is male 1 else 2
         UIC_ID += gender.equalsIgnoreCase(Constants.MALE) ? 1 : 2;
         //first two digits of the clients birth date
