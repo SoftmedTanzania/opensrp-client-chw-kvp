@@ -16,6 +16,9 @@ public interface Constants {
     String STEP_TEN = "step10";
     String KVP_VISIT_GROUP = "kvp_visit_group";
 
+    String MALE = "male";
+    String FEMALE = "female";
+
     interface JSON_FORM_EXTRA {
         String JSON = "json";
         String ENCOUNTER_TYPE = "encounter_type";
@@ -88,6 +91,7 @@ public interface Constants {
         String PrEP_REGISTER = "ec_prep_register";
         String KVP_FOLLOW_UP = "ec_kvp_followup";
         String PrEP_FOLLOWUP = "ec_prep_followup";
+        String FAMILY_MEMBER_TABLE = "ec_family_member";
     }
 
     interface ACTIVITY_PAYLOAD {
@@ -118,6 +122,7 @@ public interface Constants {
 
     interface JSON_FORM_KEY {
         String FACILITY_NAME = "facility_name";
+        String UIC_ID = "uic_id";
     }
 
     interface PROFILE_TYPES {
