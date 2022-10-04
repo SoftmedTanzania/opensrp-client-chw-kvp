@@ -80,5 +80,6 @@
     <string name="pending_prep_registration">Pending PrEP Registration</string>
     <string name="register_to_service">Register</string>
     <string name="refer_to_facility">refer</string>
+    <string name="uic_id">UIC ID: %s</string>
 
 </resources>

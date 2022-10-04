@@ -146,6 +146,18 @@
                             android:textSize="@dimen/register_member_village_size" />
                     </LinearLayout>
 
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/textview_uic_id"
+                        style="@style/CustomFontTextViewStyle.ClientList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
                 </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

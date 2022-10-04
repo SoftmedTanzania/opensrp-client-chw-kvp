@@ -68,6 +68,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected TextView textViewUndo;
     protected RelativeLayout rlKvpPositiveDate;
     protected TextView textViewVisitDone;
+    protected TextView textViewId;
     protected RelativeLayout visitDone;
     protected RelativeLayout visitInProgress;
     protected TextView textViewContinue;
@@ -141,6 +142,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textViewContinue = findViewById(R.id.textview_continue);
         textview_register = findViewById(R.id.textview_register);
         pendingPrEPRegistration = findViewById(R.id.record_prep_registration);
+        textViewId = findViewById(R.id.textview_uic_id);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -216,6 +218,23 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
                 visitInProgress.setVisibility(View.GONE);
             }
         }
+        showUICID(memberObject.getBaseEntityId());
+    }
+
+    protected void showUICID(String baseEntityId) {
+        if (!profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            String tableName = profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PrEP_PROFILE) ? Constants.TABLES.KVP_PrEP_REGISTER : Constants.TABLES.KVP_REGISTER;
+            String UIC_ID = KvpDao.getUIC_ID(baseEntityId, tableName);
+            if (StringUtils.isNotBlank(UIC_ID)) {
+                textViewId.setVisibility(View.VISIBLE);
+                textViewId.setText(getString(R.string.uic_id, UIC_ID.toUpperCase(Locale.ROOT)));
+            } else {
+                textViewId.setVisibility(View.GONE);
+            }
+        } else {
+            textViewId.setVisibility(View.GONE);
+        }
+
     }
 
     protected boolean isPrEPRegistrationPending() {

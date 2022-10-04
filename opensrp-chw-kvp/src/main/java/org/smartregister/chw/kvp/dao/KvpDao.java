@@ -323,4 +323,17 @@ public class KvpDao extends AbstractDao {
 
         return res.get(0);
     }
+
+    public static String getUIC_ID(String baseEntityId, String tableName) {
+        String sql = "SELECT uic_id FROM " + tableName + " p " +
+                " WHERE p.base_entity_id = '" + baseEntityId + "' AND p.is_closed = 0 ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "uic_id");
+
+        List<String> res = readData(sql, dataMap);
+        if(res != null && res.size() != 0 && res.get(0)!= null){
+            return res.get(0);
+        }
+        return "";
+    }
 }
