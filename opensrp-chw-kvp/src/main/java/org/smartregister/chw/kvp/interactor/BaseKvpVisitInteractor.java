@@ -355,11 +355,11 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
      */
     protected void prepareEvent(Event baseEvent) {
         if (baseEvent != null) {
-            // add pmtct date obs and last
+            // add kvp_visit_date date obs and last
             List<Object> list = new ArrayList<>();
             list.add(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
-            baseEvent.addObs(new Obs("concept", "text", "pmtct_visit_date", "",
-                    list, new ArrayList<>(), null, "pmtct_visit_date"));
+            baseEvent.addObs(new Obs("concept", "text", "kvp_visit_date", "",
+                    list, new ArrayList<>(), null, "kvp_visit_date"));
         }
     }
 
