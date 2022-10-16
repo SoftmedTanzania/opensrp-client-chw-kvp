@@ -205,18 +205,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         recordPnc(memberObject);
         textViewRecordKvp.setText(getServiceBtnText(profileType));
         if (isPrEPRegistrationPending()) {
-            textViewRecordKvp.setVisibility(View.GONE);
-            visitInProgress.setVisibility(View.GONE);
             pendingPrEPRegistration.setVisibility(View.VISIBLE);
         } else {
             pendingPrEPRegistration.setVisibility(View.GONE);
-            if (isVisitOnProgress()) {
-                textViewRecordKvp.setVisibility(View.GONE);
-                visitInProgress.setVisibility(View.VISIBLE);
-            } else {
-                textViewRecordKvp.setVisibility(View.VISIBLE);
-                visitInProgress.setVisibility(View.GONE);
-            }
+        }
+        if (isVisitOnProgress()) {
+            textViewRecordKvp.setVisibility(View.GONE);
+            visitInProgress.setVisibility(View.VISIBLE);
+        } else {
+            textViewRecordKvp.setVisibility(View.VISIBLE);
+            visitInProgress.setVisibility(View.GONE);
         }
         showUICID(memberObject.getBaseEntityId());
     }
