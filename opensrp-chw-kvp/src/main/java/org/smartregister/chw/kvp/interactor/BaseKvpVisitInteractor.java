@@ -47,6 +47,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
     protected Map<String, List<VisitDetail>> details = null;
     protected String visitType;
     protected Context context;
+    protected MemberObject memberObject;
 
     @VisibleForTesting
     public BaseKvpVisitInteractor(AppExecutors appExecutors, ECSyncHelper syncHelper) {
@@ -72,7 +73,7 @@ public class BaseKvpVisitInteractor implements BaseKvpVisitContract.Interactor {
 
     @Override
     public void reloadMemberDetails(String memberID, String profileType, BaseKvpVisitContract.InteractorCallBack callBack) {
-        MemberObject memberObject = getMemberClient(memberID, profileType);
+        memberObject = getMemberClient(memberID, profileType);
         if (memberObject != null) {
             final Runnable runnable = () -> {
                 appExecutors.mainThread().execute(() -> callBack.onMemberDetailsReloaded(memberObject));
