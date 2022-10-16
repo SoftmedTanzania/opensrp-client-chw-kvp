@@ -141,7 +141,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_margin="8dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/on_progress_image"
