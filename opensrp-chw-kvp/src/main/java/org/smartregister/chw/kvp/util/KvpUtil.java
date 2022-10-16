@@ -135,13 +135,33 @@ public class KvpUtil {
     public static void saveFormEvent(final String jsonString) throws Exception {
         AllSharedPreferences allSharedPreferences = KvpLibrary.getInstance().context().allSharedPreferences();
         Event baseEvent = KvpJsonFormUtils.processJsonForm(allSharedPreferences, jsonString);
-        if (baseEvent.getEventType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_PrEP_REGISTRATION) || baseEvent.getEventType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_REGISTRATION)) {
+        //add guard clause to break processing if client doesn't belong to any kvp group
+        if (baseEvent != null && baseEvent.getEventType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_REGISTRATION) && !isClientToBeRegistered(jsonString)) {
+            return;
+        }
+        if (baseEvent != null && baseEvent.getEventType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_PrEP_REGISTRATION) || baseEvent.getEventType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_REGISTRATION)) {
             baseEvent.addObs(new Obs().withFormSubmissionField(Constants.JSON_FORM_KEY.UIC_ID).withValue(generateUICID(baseEvent.getBaseEntityId(), jsonString))
                     .withFieldCode(Constants.JSON_FORM_KEY.UIC_ID).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<>()));
         }
         KvpUtil.processEvent(allSharedPreferences, baseEvent);
     }
 
+    public static boolean isClientToBeRegistered(String jsonString) {
+        JSONObject form;
+        try {
+            form = new JSONObject(jsonString);
+            JSONArray fields = KvpJsonFormUtils.kvpFormFields(form);
+            JSONObject shouldEnroll = KvpJsonFormUtils.getFieldJSONObject(fields, "should_enroll");
+            if (shouldEnroll != null) {
+                String shouldEnrollVal = shouldEnroll.getString(VALUE);
+                if (StringUtils.isNotBlank(shouldEnrollVal) && shouldEnrollVal.equalsIgnoreCase("yes"))
+                    return true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public static String generateUICID(String baseEntityId, String jsonString) throws ParseException {
 
