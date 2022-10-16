@@ -73,7 +73,7 @@ public class KvpVisitsUtil extends VisitUtils {
             JSONArray obs = jsonObject.getJSONArray("obs");
 
             completionObject.put("is-client_status-done", computeCompletionStatus(obs, "client_status"));
-            completionObject.put("is-condom_provision-done", computeCompletionStatus(obs, "provided_male_condoms"));
+            completionObject.put("is-condom_provision-done", computeCompletionStatus(obs, "condoms_given"));
             completionObject.put("is-hts-done", computeCompletionStatus(obs, "previous_hiv_testing_method"));
             completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_screening"));
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
