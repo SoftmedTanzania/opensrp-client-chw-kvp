@@ -1,5 +1,6 @@
 package org.smartregister.chw.kvp.util;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.RequiresApi;
 import timber.log.Timber;
 
 import static org.smartregister.chw.kvp.util.Constants.ENCOUNTER_TYPE;
@@ -360,5 +362,28 @@ public class KvpJsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void removeOptionFromCheckboxListWithKey(JSONObject formQuestion, String key) throws Exception {
+        //from the form question, get a jsonArray of options
+        JSONArray options = formQuestion.getJSONArray("options");
+        // from the options look for the option with the key that matches
+        int optionsLength = options.length();
+        int iterator;
+        boolean found = false;
+        int foundIndex = 0;
+        for (iterator = 0; iterator < optionsLength; iterator++) {
+            JSONObject option = options.getJSONObject(iterator);
+            // when you get the option, take it's position and set found to true
+            if (option.getString("key").equalsIgnoreCase(key)) {
+                found = true;
+                foundIndex = iterator;
+                break;
+            }
+        }
+        // if found, delete the option at that index
+        if (found) {
+            options.remove(foundIndex);
+        }
+    }
 
 }
