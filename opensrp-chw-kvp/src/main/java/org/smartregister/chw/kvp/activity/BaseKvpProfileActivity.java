@@ -244,7 +244,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         //if the client on screening was eligible for PrEP and
         //if the client on bio-medical services hts results was negative
         //and if the client does not exist on the PrEP register
-        return screeningEligible && htsNegative && !isPrEPMember;
+        //and if the client age is greater than 15
+        return screeningEligible && htsNegative && !isPrEPMember && memberObject.getAge() >= 15;
     }
 
     @Override
