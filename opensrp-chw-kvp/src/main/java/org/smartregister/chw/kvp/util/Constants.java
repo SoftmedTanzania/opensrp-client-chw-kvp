@@ -35,6 +35,7 @@ public interface Constants {
         String KVP_BEHAVIORAL_SERVICE_VISIT = "KVP Behavioral Service Visit";
         String KVP_STRUCTURAL_SERVICE_VISIT = "KVP Structural Service Visit";
         String KVP_OTHER_SERVICE_VISIT = "KVP Other Service Visit";
+        String PrEP_CLIENT_NOT_ELIGIBLE = "PrEP Client Not Eligible";
     }
 
     interface FORMS {

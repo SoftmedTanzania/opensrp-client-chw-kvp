@@ -1,5 +1,7 @@
 package org.smartregister.chw.kvp.util;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,12 +9,15 @@ import org.smartregister.chw.kvp.KvpLibrary;
 import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.repository.VisitDetailsRepository;
 import org.smartregister.chw.kvp.repository.VisitRepository;
+import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.repository.AllSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import timber.log.Timber;
 
@@ -41,8 +46,22 @@ public class PrEPVisitsUtil extends VisitUtils {
         }
         if (prepFollowupVisit.size() > 0) {
             processVisits(prepFollowupVisit, visitRepository, visitDetailsRepository);
+            for (Visit v : prepFollowupVisit) {
+                if (shouldCreateCloseVisitEvent(v)) {
+                    createCancelledEvent(v.getJson());
+                }
+            }
         }
 
+    }
+
+    private static void createCancelledEvent(String json) throws Exception {
+        Event baseEvent = new Gson().fromJson(json, Event.class);
+        baseEvent.setFormSubmissionId(UUID.randomUUID().toString());
+        baseEvent.setEventType(Constants.EVENT_TYPE.PrEP_CLIENT_NOT_ELIGIBLE);
+        AllSharedPreferences allSharedPreferences = KvpLibrary.getInstance().context().allSharedPreferences();
+        NCUtil.addEvent(allSharedPreferences, baseEvent);
+        NCUtil.startClientProcessing();
     }
 
     public static String getPrEPVisitStatus(Visit lastVisit) {
@@ -95,6 +114,9 @@ public class PrEPVisitsUtil extends VisitUtils {
         VisitRepository visitRepository = KvpLibrary.getInstance().visitRepository();
         manualProcessedVisits.add(visit);
         processVisits(manualProcessedVisits, visitRepository, visitDetailsRepository);
+        if (shouldCreateCloseVisitEvent(visit)) {
+            createCancelledEvent(visit.getJson());
+        }
     }
 
     public static boolean checkIfShouldInitiateToPrEP(JSONArray obs) throws JSONException {
@@ -109,5 +131,16 @@ public class PrEPVisitsUtil extends VisitUtils {
             }
         }
         return shouldInitiate.equalsIgnoreCase("yes");
+    }
+
+    private static boolean shouldCreateCloseVisitEvent(Visit v) {
+        try {
+            JSONObject jsonObject = new JSONObject(v.getJson());
+            JSONArray obs = jsonObject.getJSONArray("obs");
+            return !checkIfShouldInitiateToPrEP(obs);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return false;
     }
 }
