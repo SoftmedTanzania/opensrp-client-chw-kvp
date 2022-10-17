@@ -77,6 +77,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
+    protected TextView manualProcessVisit;
     protected BaseKvpFloatingMenu baseKvpFloatingMenu;
     protected String profileType;
     private TextView tvUpComingServices;
@@ -145,6 +146,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textview_register = findViewById(R.id.textview_register);
         pendingPrEPRegistration = findViewById(R.id.record_prep_registration);
         textViewId = findViewById(R.id.textview_uic_id);
+        manualProcessVisit = findViewById(R.id.textview_manual_process);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -224,6 +226,21 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            Visit lastPrepVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.PrEP_FOLLOWUP_VISIT);
+            if (!lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
+                manualProcessVisit.setVisibility(View.VISIBLE);
+                manualProcessVisit.setOnClickListener(view -> {
+                    try {
+                        PrEPVisitsUtil.manualProcessVisit(lastPrepVisit);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                manualProcessVisit.setVisibility(View.GONE);
+            }
+
         }
         if (isVisitOnProgress(profileType)) {
             textViewRecordKvp.setVisibility(View.GONE);
