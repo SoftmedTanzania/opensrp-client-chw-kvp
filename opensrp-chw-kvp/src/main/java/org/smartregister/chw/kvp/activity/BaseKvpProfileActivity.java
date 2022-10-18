@@ -228,7 +228,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             }
 
             Visit lastPrepVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.PrEP_FOLLOWUP_VISIT);
-            if (!lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
+            if (lastPrepVisit!= null && !lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
                 manualProcessVisit.setVisibility(View.VISIBLE);
                 manualProcessVisit.setOnClickListener(view -> {
                     try {
