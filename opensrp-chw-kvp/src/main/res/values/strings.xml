@@ -82,5 +82,6 @@
     <string name="refer_to_facility">refer</string>
     <string name="uic_id">UIC ID: %s</string>
     <string name="manual_process_visit">Process Visit</string>
+    <string name="prep_status_initiated">Initiated</string>
 
 </resources>
