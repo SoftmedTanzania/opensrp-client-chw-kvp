@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.smartregister.chw.kvp.fragment.BaseKvpRegisterFragment;
@@ -35,9 +36,8 @@ import static org.smartregister.util.Utils.getName;
 public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProvider.RegisterViewHolder> {
 
     private final LayoutInflater inflater;
-
-    private View.OnClickListener paginationClickListener;
     protected View.OnClickListener onClickListener;
+    private View.OnClickListener paginationClickListener;
     private Context context;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
 
@@ -87,6 +87,12 @@ public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProv
             viewHolder.patientColumn.setTag(pc);
             viewHolder.patientColumn.setTag(R.id.VIEW_ID, BaseKvpRegisterFragment.CLICK_VIEW_NORMAL);
 
+            String prepStatus = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PrEP_STATUS, false);
+            if (StringUtils.isNotBlank(prepStatus) && !(prepStatus.equalsIgnoreCase("not_initiated") || prepStatus.equalsIgnoreCase("discontinued_quit"))) {
+                viewHolder.tvPrepStatus.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.tvPrepStatus.setVisibility(View.GONE);
+            }
 
             viewHolder.registerColumns.setOnClickListener(onClickListener);
 
@@ -152,6 +158,7 @@ public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProv
         public TextView textViewVillage;
         public TextView textViewGender;
         public View patientColumn;
+        public TextView tvPrepStatus;
 
         public View registerColumns;
         public View dueWrapper;
@@ -166,6 +173,7 @@ public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProv
             patientColumn = itemView.findViewById(R.id.patient_column);
             registerColumns = itemView.findViewById(R.id.register_columns);
             dueWrapper = itemView.findViewById(R.id.due_button_wrapper);
+            tvPrepStatus = itemView.findViewById(R.id.prep_status);
         }
     }
 

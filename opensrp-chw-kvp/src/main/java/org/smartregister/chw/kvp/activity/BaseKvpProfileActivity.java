@@ -26,6 +26,8 @@ import org.smartregister.chw.kvp.listener.OnClickFloatingMenu;
 import org.smartregister.chw.kvp.presenter.BaseKvpProfilePresenter;
 import org.smartregister.chw.kvp.util.Constants;
 import org.smartregister.chw.kvp.util.KvpUtil;
+import org.smartregister.chw.kvp.util.KvpVisitsUtil;
+import org.smartregister.chw.kvp.util.PrEPVisitsUtil;
 import org.smartregister.domain.AlertStatus;
 import org.smartregister.helper.ImageRenderHelper;
 import org.smartregister.kvp.R;
@@ -75,6 +77,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected LinearLayout recordVisits;
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
+    protected TextView manualProcessVisit;
+    protected TextView prep_status;
     protected BaseKvpFloatingMenu baseKvpFloatingMenu;
     protected String profileType;
     private TextView tvUpComingServices;
@@ -143,6 +147,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         textview_register = findViewById(R.id.textview_register);
         pendingPrEPRegistration = findViewById(R.id.record_prep_registration);
         textViewId = findViewById(R.id.textview_uic_id);
+        manualProcessVisit = findViewById(R.id.textview_manual_process);
+        prep_status = findViewById(R.id.prep_status);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -204,21 +210,71 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         recordAnc(memberObject);
         recordPnc(memberObject);
         textViewRecordKvp.setText(getServiceBtnText(profileType));
-        if (isPrEPRegistrationPending()) {
-            textViewRecordKvp.setVisibility(View.GONE);
-            visitInProgress.setVisibility(View.GONE);
-            pendingPrEPRegistration.setVisibility(View.VISIBLE);
-        } else {
-            pendingPrEPRegistration.setVisibility(View.GONE);
-            if (isVisitOnProgress()) {
-                textViewRecordKvp.setVisibility(View.GONE);
-                visitInProgress.setVisibility(View.VISIBLE);
+        setupKvpProfile();
+        setupPrEPProfile();
+        setupButtons();
+        hideButtonsOnClosed();
+        showUICID(memberObject.getBaseEntityId());
+        showInitiatedStatusForPrep(profileType, memberObject.getBaseEntityId());
+    }
+
+    protected void setupKvpProfile() {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
+            try {
+                KvpVisitsUtil.processVisits();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (isPrEPRegistrationPending()) {
+                pendingPrEPRegistration.setVisibility(View.VISIBLE);
             } else {
-                textViewRecordKvp.setVisibility(View.VISIBLE);
-                visitInProgress.setVisibility(View.GONE);
+                pendingPrEPRegistration.setVisibility(View.GONE);
             }
         }
-        showUICID(memberObject.getBaseEntityId());
+    }
+
+    protected void setupPrEPProfile() {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            try {
+                PrEPVisitsUtil.processVisits();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Visit lastPrepVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.PrEP_FOLLOWUP_VISIT);
+            if (lastPrepVisit != null && !lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
+                manualProcessVisit.setVisibility(View.VISIBLE);
+                manualProcessVisit.setOnClickListener(view -> {
+                    try {
+                        PrEPVisitsUtil.manualProcessVisit(lastPrepVisit);
+                        displayToast(R.string.prep_visit_conducted);
+                        setupViews();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                manualProcessVisit.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
+    protected void setupButtons() {
+        if (isVisitOnProgress(profileType)) {
+            textViewRecordKvp.setVisibility(View.GONE);
+            visitInProgress.setVisibility(View.VISIBLE);
+        } else {
+            textViewRecordKvp.setVisibility(View.VISIBLE);
+            visitInProgress.setVisibility(View.GONE);
+        }
+    }
+
+    protected void hideButtonsOnClosed() {
+        if (KvpDao.isClientClosed(memberObject.getBaseEntityId(), profileType)) {
+            textViewRecordKvp.setVisibility(View.GONE);
+            visitInProgress.setVisibility(View.GONE);
+        }
     }
 
     protected void showUICID(String baseEntityId) {
@@ -237,6 +293,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
 
     }
 
+    protected void showInitiatedStatusForPrep(String profileType, String baseEntityId) {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            if (KvpDao.isPrEPInitiated(baseEntityId)) {
+                prep_status.setVisibility(View.VISIBLE);
+            } else {
+                prep_status.setVisibility(View.GONE);
+            }
+        }
+    }
+
     protected boolean isPrEPRegistrationPending() {
         boolean screeningEligible = KvpDao.isClientEligibleForPrEPFromScreening(memberObject.getBaseEntityId());
         boolean htsNegative = KvpDao.isClientHTSResultsNegative(memberObject.getBaseEntityId());
@@ -244,7 +310,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         //if the client on screening was eligible for PrEP and
         //if the client on bio-medical services hts results was negative
         //and if the client does not exist on the PrEP register
-        return screeningEligible && htsNegative && !isPrEPMember;
+        //and if the client age is greater than 15
+        return screeningEligible && htsNegative && !isPrEPMember && memberObject.getAge() >= 15;
     }
 
     @Override
@@ -451,21 +518,29 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         }
     }
 
-    protected boolean isVisitOnProgress() {
-        Visit bioMedicalVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
-        Visit behavioralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
-        Visit structuralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
-        Visit otherServiceVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
+    protected boolean isVisitOnProgress(String profileType) {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
+            Visit bioMedicalVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT);
+            Visit behavioralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_BEHAVIORAL_SERVICE_VISIT);
+            Visit structuralVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_STRUCTURAL_SERVICE_VISIT);
+            Visit otherServiceVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.KVP_OTHER_SERVICE_VISIT);
 
-        if (bioMedicalVisit != null && !bioMedicalVisit.getProcessed()) {
-            return true;
+            if (bioMedicalVisit != null && !bioMedicalVisit.getProcessed()) {
+                return true;
+            }
+            if (behavioralVisit != null && !behavioralVisit.getProcessed()) {
+                return true;
+            }
+            if (structuralVisit != null && !structuralVisit.getProcessed()) {
+                return true;
+            }
+            return otherServiceVisit != null && !otherServiceVisit.getProcessed();
         }
-        if (behavioralVisit != null && !behavioralVisit.getProcessed()) {
-            return true;
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            Visit lastPrepVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.PrEP_FOLLOWUP_VISIT);
+            return lastPrepVisit != null && !lastPrepVisit.getProcessed();
         }
-        if (structuralVisit != null && !structuralVisit.getProcessed()) {
-            return true;
-        }
-        return otherServiceVisit != null && !otherServiceVisit.getProcessed();
+
+        return false;
     }
 }

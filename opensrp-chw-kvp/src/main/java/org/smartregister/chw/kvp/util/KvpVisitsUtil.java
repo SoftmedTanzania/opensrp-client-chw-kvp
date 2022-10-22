@@ -9,7 +9,6 @@ import org.smartregister.chw.kvp.repository.VisitDetailsRepository;
 import org.smartregister.chw.kvp.repository.VisitRepository;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,9 +34,9 @@ public class KvpVisitsUtil extends VisitUtils {
         List<Visit> otherServiceVisits = new ArrayList<>();
 
         for (Visit v : visits) {
-            Date truncatedUpdatedDate = new Date(v.getUpdatedAt().getTime() - v.getUpdatedAt().getTime() % (24 * 60 * 60 * 1000));
-            Date today = new Date(Calendar.getInstance().getTimeInMillis() - Calendar.getInstance().getTimeInMillis() % (24 * 60 * 60 * 1000));
-            if (truncatedUpdatedDate.before(today)) {
+            Date updatedAtDate = new Date(v.getUpdatedAt().getTime());
+            int daysDiff = TimeUtils.getElapsedDays(updatedAtDate);
+            if (daysDiff > 1) {
                 if (v.getVisitType().equalsIgnoreCase(Constants.EVENT_TYPE.KVP_BIO_MEDICAL_SERVICE_VISIT) && getBioMedicalStatus(v).equals(Complete)) {
                     bioMedicalServiceVisit.add(v);
                 }
@@ -73,7 +72,7 @@ public class KvpVisitsUtil extends VisitUtils {
             JSONArray obs = jsonObject.getJSONArray("obs");
 
             completionObject.put("is-client_status-done", computeCompletionStatus(obs, "client_status"));
-            completionObject.put("is-condom_provision-done", computeCompletionStatus(obs, "provided_male_condoms"));
+            completionObject.put("is-condom_provision-done", computeCompletionStatus(obs, "condoms_given"));
             completionObject.put("is-hts-done", computeCompletionStatus(obs, "previous_hiv_testing_method"));
             completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_screening"));
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
