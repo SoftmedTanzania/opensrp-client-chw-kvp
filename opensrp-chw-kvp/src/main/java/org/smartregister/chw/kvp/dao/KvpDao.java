@@ -1,5 +1,6 @@
 package org.smartregister.chw.kvp.dao;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.dao.AbstractDao;
 
@@ -358,7 +359,7 @@ public class KvpDao extends AbstractDao {
 
         List<String> res = readData(sql, dataMap);
         if(res != null && res.size() != 0 && res.get(0)!= null){
-            return res.get(0).equalsIgnoreCase("initiated");
+            return StringUtils.isNotBlank(res.get(0)) && !(res.get(0).equalsIgnoreCase("not_initiated") ||res.get(0).equalsIgnoreCase("discontinued_quit") );
         }
         return false;
     }

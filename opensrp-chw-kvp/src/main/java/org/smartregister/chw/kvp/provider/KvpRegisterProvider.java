@@ -88,7 +88,7 @@ public class KvpRegisterProvider implements RecyclerViewProvider<KvpRegisterProv
             viewHolder.patientColumn.setTag(R.id.VIEW_ID, BaseKvpRegisterFragment.CLICK_VIEW_NORMAL);
 
             String prepStatus = Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PrEP_STATUS, false);
-            if (StringUtils.isNotBlank(prepStatus) && prepStatus.equalsIgnoreCase("initiated")) {
+            if (StringUtils.isNotBlank(prepStatus) && !(prepStatus.equalsIgnoreCase("not_initiated") || prepStatus.equalsIgnoreCase("discontinued_quit"))) {
                 viewHolder.tvPrepStatus.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.tvPrepStatus.setVisibility(View.GONE);
