@@ -44,6 +44,7 @@ public class DBConstants {
         public static final String DELIVERY_DATE = "delivery_date";
         public static final String KVP_FOLLOW_UP_DATE = "date_chw_mfollowup";
         public static final String CHILD = "ec_child";
+        public static final String PrEP_STATUS = "prep_status";
 
     }
 }
