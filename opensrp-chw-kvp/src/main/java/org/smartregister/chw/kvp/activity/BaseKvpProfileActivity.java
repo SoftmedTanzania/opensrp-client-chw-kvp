@@ -78,6 +78,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     protected TextView textViewVisitDoneEdit;
     protected TextView textViewRecordAncNotDone;
     protected TextView manualProcessVisit;
+    protected TextView prep_status;
     protected BaseKvpFloatingMenu baseKvpFloatingMenu;
     protected String profileType;
     private TextView tvUpComingServices;
@@ -147,6 +148,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         pendingPrEPRegistration = findViewById(R.id.record_prep_registration);
         textViewId = findViewById(R.id.textview_uic_id);
         manualProcessVisit = findViewById(R.id.textview_manual_process);
+        prep_status = findViewById(R.id.prep_status);
 
         textViewRecordAncNotDone.setOnClickListener(this);
         textViewVisitDoneEdit.setOnClickListener(this);
@@ -250,6 +252,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             visitInProgress.setVisibility(View.GONE);
         }
         showUICID(memberObject.getBaseEntityId());
+        showInitiatedStatusForPrep(profileType, memberObject.getBaseEntityId());
     }
 
     protected void showUICID(String baseEntityId) {
@@ -266,6 +269,16 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             textViewId.setVisibility(View.GONE);
         }
 
+    }
+
+    protected void showInitiatedStatusForPrep(String profileType, String baseEntityId) {
+        if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
+            if(KvpDao.isPrEPInitiated(baseEntityId)){
+                prep_status.setVisibility(View.VISIBLE);
+            } else {
+                prep_status.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected boolean isPrEPRegistrationPending() {

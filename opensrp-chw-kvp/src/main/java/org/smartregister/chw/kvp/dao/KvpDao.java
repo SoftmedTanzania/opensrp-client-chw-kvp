@@ -349,4 +349,17 @@ public class KvpDao extends AbstractDao {
         }
         return "";
     }
+
+    public static boolean isPrEPInitiated(String baseEntityId) {
+        String sql = "SELECT prep_status FROM ec_prep_register p " +
+                " WHERE p.base_entity_id = '" + baseEntityId + "' AND p.is_closed = 0 ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_status");
+
+        List<String> res = readData(sql, dataMap);
+        if(res != null && res.size() != 0 && res.get(0)!= null){
+            return res.get(0).equalsIgnoreCase("initiated");
+        }
+        return false;
+    }
 }
