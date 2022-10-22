@@ -83,5 +83,6 @@
     <string name="uic_id">UIC ID: %s</string>
     <string name="manual_process_visit">Process Visit</string>
     <string name="prep_status_initiated">Initiated</string>
+    <string name="prep_visit_conducted">PrEP Visit Conducted</string>
 
 </resources>

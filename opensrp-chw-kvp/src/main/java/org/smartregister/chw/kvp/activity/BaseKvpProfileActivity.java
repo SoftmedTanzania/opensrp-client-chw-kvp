@@ -235,6 +235,8 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
                 manualProcessVisit.setOnClickListener(view -> {
                     try {
                         PrEPVisitsUtil.manualProcessVisit(lastPrepVisit);
+                        displayToast(R.string.prep_visit_conducted);
+                        setupViews();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
