@@ -133,11 +133,25 @@ public class PrEPVisitsUtil extends VisitUtils {
         return shouldInitiate.equalsIgnoreCase("yes");
     }
 
+    public static boolean checkIfShouldRemainToPrEP(JSONArray obs) throws JSONException {
+        String reasons_stopping_prep = "";
+        int size = obs.length();
+        for (int i = 0; i < size; i++) {
+            JSONObject checkObj = obs.getJSONObject(i);
+            if (checkObj.getString("fieldCode").equalsIgnoreCase("reasons_stopping_prep")) {
+                JSONArray values = checkObj.getJSONArray("values");
+                reasons_stopping_prep = values.toString();
+                break;
+            }
+        }
+        return reasons_stopping_prep.contains("hiv_positive");
+    }
+
     private static boolean shouldCreateCloseVisitEvent(Visit v) {
         try {
             JSONObject jsonObject = new JSONObject(v.getJson());
             JSONArray obs = jsonObject.getJSONArray("obs");
-            return !checkIfShouldInitiateToPrEP(obs);
+            return checkIfShouldRemainToPrEP(obs);
         } catch (Exception e) {
             Timber.e(e);
         }
