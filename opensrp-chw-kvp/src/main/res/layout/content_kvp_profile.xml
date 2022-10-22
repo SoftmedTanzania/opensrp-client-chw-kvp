@@ -46,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
                 android:src="@drawable/childrow_history" />
 
             <ImageView
@@ -58,16 +57,26 @@
                 android:src="@drawable/row_goto" />
 
             <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/vViewHistory"
+                style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/tick_image"
+                android:gravity="center_horizontal"
+                android:text="@string/medical_history"
+                android:textColor="@android:color/black" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:id="@+id/ivViewHistoryArrow"
                 style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/vViewHistory"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/tick_image"
                 android:text="@string/view_medical_history"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/light_grey_text" />
+                android:textColor="@android:color/darker_gray" />
         </RelativeLayout>
 
         <View
