@@ -2,6 +2,7 @@ package org.smartregister.chw.kvp.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.chw.kvp.domain.MemberObject;
+import org.smartregister.chw.kvp.util.Constants;
 import org.smartregister.dao.AbstractDao;
 
 import java.text.SimpleDateFormat;
@@ -44,33 +45,53 @@ public class KvpDao extends AbstractDao {
         DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "count");
 
         List<Integer> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0) != null){
-            return  res.get(0) > 0;
+        if (res != null && res.size() != 0 && res.get(0) != null) {
+            return res.get(0) > 0;
         }
         return false;
     }
 
-    public static boolean isClientEligibleForPrEPFromScreening(String baseEntityID){
+    public static boolean isClientClosed(String baseEntityId, String profileType) {
+
+        String tableName = profileType.equals(Constants.PROFILE_TYPES.PrEP_PROFILE)
+                                ? Constants.TABLES.PrEP_REGISTER
+                            : profileType.equals(Constants.PROFILE_TYPES.KVP_PROFILE)
+                                ? Constants.TABLES.KVP_REGISTER
+                            : Constants.TABLES.KVP_PrEP_REGISTER;
+
+        String sql = "SELECT p.is_closed FROM " + tableName + " p " +
+                "WHERE p.base_entity_id = '" + baseEntityId + "'";
+
+        DataMap<Integer> dataMap = cursor -> getCursorIntValue(cursor, "is_closed");
+
+        List<Integer> res = readData(sql, dataMap);
+        if (res != null && res.size() != 0 && res.get(0) != null) {
+            return res.get(0) == 1;
+        }
+        return false;
+    }
+
+    public static boolean isClientEligibleForPrEPFromScreening(String baseEntityID) {
         String sql = "SELECT prep_qualified FROM ec_kvp_register p " +
                 "WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
 
         DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_qualified");
 
         List<String> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0)!= null){
+        if (res != null && res.size() != 0 && res.get(0) != null) {
             return res.get(0).equalsIgnoreCase("yes");
         }
         return false;
     }
 
-    public static boolean isClientHTSResultsNegative(String baseEntityID){
+    public static boolean isClientHTSResultsNegative(String baseEntityID) {
         String sql = "SELECT hiv_status FROM ec_kvp_register p " +
                 " WHERE p.base_entity_id = '" + baseEntityID + "' AND p.is_closed = 0 ";
 
         DataMap<String> dataMap = cursor -> getCursorValue(cursor, "hiv_status");
 
         List<String> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0)!= null){
+        if (res != null && res.size() != 0 && res.get(0) != null) {
             return res.get(0).equalsIgnoreCase("negative");
         }
         return false;
@@ -332,7 +353,7 @@ public class KvpDao extends AbstractDao {
         DataMap<String> dataMap = cursor -> getCursorValue(cursor, "uic_id");
 
         List<String> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0)!= null){
+        if (res != null && res.size() != 0 && res.get(0) != null) {
             return res.get(0);
         }
         return "";
@@ -345,7 +366,7 @@ public class KvpDao extends AbstractDao {
         DataMap<String> dataMap = cursor -> getCursorValue(cursor, "client_group");
 
         List<String> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0)!= null){
+        if (res != null && res.size() != 0 && res.get(0) != null) {
             return res.get(0);
         }
         return "";
@@ -358,8 +379,8 @@ public class KvpDao extends AbstractDao {
         DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_status");
 
         List<String> res = readData(sql, dataMap);
-        if(res != null && res.size() != 0 && res.get(0)!= null){
-            return StringUtils.isNotBlank(res.get(0)) && !(res.get(0).equalsIgnoreCase("not_initiated") ||res.get(0).equalsIgnoreCase("discontinued_quit") );
+        if (res != null && res.size() != 0 && res.get(0) != null) {
+            return StringUtils.isNotBlank(res.get(0)) && !(res.get(0).equalsIgnoreCase("not_initiated") || res.get(0).equalsIgnoreCase("discontinued_quit"));
         }
         return false;
     }

@@ -210,6 +210,15 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
         recordAnc(memberObject);
         recordPnc(memberObject);
         textViewRecordKvp.setText(getServiceBtnText(profileType));
+        setupKvpProfile();
+        setupPrEPProfile();
+        setupButtons();
+        hideButtonsOnClosed();
+        showUICID(memberObject.getBaseEntityId());
+        showInitiatedStatusForPrep(profileType, memberObject.getBaseEntityId());
+    }
+
+    protected void setupKvpProfile() {
         if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.KVP_PROFILE)) {
             try {
                 KvpVisitsUtil.processVisits();
@@ -222,6 +231,9 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
                 pendingPrEPRegistration.setVisibility(View.GONE);
             }
         }
+    }
+
+    protected void setupPrEPProfile() {
         if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
             try {
                 PrEPVisitsUtil.processVisits();
@@ -230,7 +242,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             }
 
             Visit lastPrepVisit = KvpLibrary.getInstance().visitRepository().getLatestVisit(memberObject.getBaseEntityId(), Constants.EVENT_TYPE.PrEP_FOLLOWUP_VISIT);
-            if (lastPrepVisit!= null && !lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
+            if (lastPrepVisit != null && !lastPrepVisit.getProcessed() && PrEPVisitsUtil.getPrEPVisitStatus(lastPrepVisit).equalsIgnoreCase(PrEPVisitsUtil.Complete)) {
                 manualProcessVisit.setVisibility(View.VISIBLE);
                 manualProcessVisit.setOnClickListener(view -> {
                     try {
@@ -246,6 +258,9 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             }
 
         }
+    }
+
+    protected void setupButtons() {
         if (isVisitOnProgress(profileType)) {
             textViewRecordKvp.setVisibility(View.GONE);
             visitInProgress.setVisibility(View.VISIBLE);
@@ -253,8 +268,13 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
             textViewRecordKvp.setVisibility(View.VISIBLE);
             visitInProgress.setVisibility(View.GONE);
         }
-        showUICID(memberObject.getBaseEntityId());
-        showInitiatedStatusForPrep(profileType, memberObject.getBaseEntityId());
+    }
+
+    protected void hideButtonsOnClosed() {
+        if (KvpDao.isClientClosed(memberObject.getBaseEntityId(), profileType)) {
+            textViewRecordKvp.setVisibility(View.GONE);
+            visitInProgress.setVisibility(View.GONE);
+        }
     }
 
     protected void showUICID(String baseEntityId) {
@@ -275,7 +295,7 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
 
     protected void showInitiatedStatusForPrep(String profileType, String baseEntityId) {
         if (profileType.equalsIgnoreCase(Constants.PROFILE_TYPES.PrEP_PROFILE)) {
-            if(KvpDao.isPrEPInitiated(baseEntityId)){
+            if (KvpDao.isPrEPInitiated(baseEntityId)) {
                 prep_status.setVisibility(View.VISIBLE);
             } else {
                 prep_status.setVisibility(View.GONE);
