@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.kvp.KvpLibrary;
 import org.smartregister.chw.kvp.dao.KvpDao;
+import org.smartregister.chw.kvp.domain.MemberObject;
 import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.repository.VisitDetailsRepository;
 import org.smartregister.chw.kvp.repository.VisitRepository;
@@ -68,6 +69,7 @@ public class KvpVisitsUtil extends VisitUtils {
 
     public static String getBioMedicalStatus(Visit lastVisit) {
         HashMap<String, Boolean> completionObject = new HashMap<>();
+        String gender = getKvpMemberGender(lastVisit.getBaseEntityId());
         try {
             JSONObject jsonObject = new JSONObject(lastVisit.getJson());
             JSONArray obs = jsonObject.getJSONArray("obs");
@@ -79,15 +81,14 @@ public class KvpVisitsUtil extends VisitUtils {
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
 
             //TODO add check to see if this action was shown
-//            completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
+            //completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
 
-            completionObject.put("is-tb_screening-done", computeCompletionStatus(obs, "tb_screening"));
-
-            if (KvpDao.getMember(lastVisit.getBaseEntityId()).getGender().equalsIgnoreCase("male"))
+            if (gender.equalsIgnoreCase(Constants.MALE)) {
                 completionObject.put("is-vmmc-done", computeCompletionStatus(obs, "vmcc_provided"));
-
-            if (KvpDao.getMember(lastVisit.getBaseEntityId()).getGender().equalsIgnoreCase("female"))
+            } else {
                 completionObject.put("is-cervical_cancer_screening-done", computeCompletionStatus(obs, "cervical_cancer_screening"));
+            }
+            completionObject.put("is-tb_screening-done", computeCompletionStatus(obs, "tb_screening"));
 
         } catch (Exception e) {
             Timber.e(e);
@@ -167,5 +168,13 @@ public class KvpVisitsUtil extends VisitUtils {
         VisitRepository visitRepository = KvpLibrary.getInstance().visitRepository();
         manualProcessedVisits.add(visit);
         processVisits(manualProcessedVisits, visitRepository, visitDetailsRepository);
+    }
+
+    public static String getKvpMemberGender(String baseEntityId) {
+        MemberObject memberObject = KvpDao.getKvpMember(baseEntityId);
+        if (memberObject != null) {
+            return memberObject.getGender();
+        }
+        return "";
     }
 }

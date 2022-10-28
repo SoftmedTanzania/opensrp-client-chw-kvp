@@ -304,14 +304,14 @@ public class BaseKvpProfileActivity extends BaseProfileActivity implements KvpPr
     }
 
     protected boolean isPrEPRegistrationPending() {
-        boolean screeningEligible = KvpDao.isClientEligibleForPrEPFromScreening(memberObject.getBaseEntityId());
+       // boolean screeningEligible = KvpDao.isClientEligibleForPrEPFromScreening(memberObject.getBaseEntityId());
         boolean htsNegative = KvpDao.isClientHTSResultsNegative(memberObject.getBaseEntityId());
         boolean isPrEPMember = KvpDao.isRegisteredForPrEP(memberObject.getBaseEntityId());
         //if the client on screening was eligible for PrEP and
         //if the client on bio-medical services hts results was negative
         //and if the client does not exist on the PrEP register
         //and if the client age is greater than 15
-        return screeningEligible && htsNegative && !isPrEPMember && memberObject.getAge() >= 15;
+        return  htsNegative && !isPrEPMember && memberObject.getAge() >= 15;
     }
 
     @Override
