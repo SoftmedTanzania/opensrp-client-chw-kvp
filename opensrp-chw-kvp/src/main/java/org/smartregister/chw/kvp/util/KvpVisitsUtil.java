@@ -77,7 +77,7 @@ public class KvpVisitsUtil extends VisitUtils {
             completionObject.put("is-client_status-done", computeCompletionStatus(obs, "client_status"));
             completionObject.put("is-condom_provision-done", computeCompletionStatus(obs, "condoms_given"));
             completionObject.put("is-hts-done", computeCompletionStatus(obs, "previous_hiv_testing_method"));
-            completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_screening"));
+            completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_testing"));
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
 
             //TODO add check to see if this action was shown
