@@ -54,10 +54,10 @@ public class KvpDao extends AbstractDao {
     public static boolean isClientClosed(String baseEntityId, String profileType) {
 
         String tableName = profileType.equals(Constants.PROFILE_TYPES.PrEP_PROFILE)
-                                ? Constants.TABLES.PrEP_REGISTER
-                            : profileType.equals(Constants.PROFILE_TYPES.KVP_PROFILE)
-                                ? Constants.TABLES.KVP_REGISTER
-                            : Constants.TABLES.KVP_PrEP_REGISTER;
+                ? Constants.TABLES.PrEP_REGISTER
+                : profileType.equals(Constants.PROFILE_TYPES.KVP_PROFILE)
+                ? Constants.TABLES.KVP_REGISTER
+                : Constants.TABLES.KVP_PrEP_REGISTER;
 
         String sql = "SELECT p.is_closed FROM " + tableName + " p " +
                 "WHERE p.base_entity_id = '" + baseEntityId + "'";
@@ -383,5 +383,18 @@ public class KvpDao extends AbstractDao {
             return StringUtils.isNotBlank(res.get(0)) && !(res.get(0).equalsIgnoreCase("not_initiated") || res.get(0).equalsIgnoreCase("discontinued_quit"));
         }
         return false;
+    }
+
+    public static String getPrepEnrollmentDate(String baseEntityId) {
+        String sql = "SELECT prep_enrollment_date FROM ec_prep_register p " +
+                " WHERE p.base_entity_id = '" + baseEntityId + "' AND p.is_closed = 0 ";
+
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_enrollment_date");
+
+        List<String> res = readData(sql, dataMap);
+        if (res != null && res.size() != 0 && res.get(0) != null) {
+            return res.get(0);
+        }
+        return null;
     }
 }
