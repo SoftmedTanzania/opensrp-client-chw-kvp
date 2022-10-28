@@ -79,8 +79,11 @@ public class KvpVisitsUtil extends VisitUtils {
             completionObject.put("is-hts-done", computeCompletionStatus(obs, "previous_hiv_testing_method"));
             completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_screening"));
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
-            completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
-            if(gender.equalsIgnoreCase(Constants.MALE)) {
+
+            //TODO add check to see if this action was shown
+            //completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
+
+            if (gender.equalsIgnoreCase(Constants.MALE)) {
                 completionObject.put("is-vmmc-done", computeCompletionStatus(obs, "vmcc_provided"));
             } else {
                 completionObject.put("is-cervical_cancer_screening-done", computeCompletionStatus(obs, "cervical_cancer_screening"));
@@ -167,7 +170,7 @@ public class KvpVisitsUtil extends VisitUtils {
         processVisits(manualProcessedVisits, visitRepository, visitDetailsRepository);
     }
 
-    public static String getKvpMemberGender(String baseEntityId){
+    public static String getKvpMemberGender(String baseEntityId) {
         MemberObject memberObject = KvpDao.getKvpMember(baseEntityId);
         if (memberObject != null) {
             return memberObject.getGender();
