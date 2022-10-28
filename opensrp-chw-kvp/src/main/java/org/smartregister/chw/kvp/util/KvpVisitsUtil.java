@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.chw.kvp.KvpLibrary;
+import org.smartregister.chw.kvp.dao.KvpDao;
 import org.smartregister.chw.kvp.domain.Visit;
 import org.smartregister.chw.kvp.repository.VisitDetailsRepository;
 import org.smartregister.chw.kvp.repository.VisitRepository;
@@ -76,10 +77,17 @@ public class KvpVisitsUtil extends VisitUtils {
             completionObject.put("is-hts-done", computeCompletionStatus(obs, "previous_hiv_testing_method"));
             completionObject.put("is-hepatitis-done", computeCompletionStatus(obs, "hep_b_screening"));
             completionObject.put("is-family_planning-done", computeCompletionStatus(obs, "family_planning_service"));
-            completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
-            completionObject.put("is-vmmc-done", computeCompletionStatus(obs, "vmcc_provided"));
+
+            //TODO add check to see if this action was shown
+//            completionObject.put("is-mat-done", computeCompletionStatus(obs, "mat_provided"));
+
             completionObject.put("is-tb_screening-done", computeCompletionStatus(obs, "tb_screening"));
-            completionObject.put("is-cervical_cancer_screening-done", computeCompletionStatus(obs, "cervical_cancer_screening"));
+
+            if (KvpDao.getMember(lastVisit.getBaseEntityId()).getGender().equalsIgnoreCase("male"))
+                completionObject.put("is-vmmc-done", computeCompletionStatus(obs, "vmcc_provided"));
+
+            if (KvpDao.getMember(lastVisit.getBaseEntityId()).getGender().equalsIgnoreCase("female"))
+                completionObject.put("is-cervical_cancer_screening-done", computeCompletionStatus(obs, "cervical_cancer_screening"));
 
         } catch (Exception e) {
             Timber.e(e);

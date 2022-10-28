@@ -61,7 +61,8 @@ public interface Constants {
         String KVP_PrEP_PEP = "kvp_prep_pep";
         String KVP_HEPATITIS = "kvp_hepatitis";
         String KVP_STI_SCREENING = "kvp_sti_screening";
-        String KVP_FAMILY_PLANNING_SERVICES = "kvp_family_planning_services";
+        String KVP_MALE_FAMILY_PLANNING_SERVICES = "kvp_male_family_planning_services";
+        String KVP_FEMALE_FAMILY_PLANNING_SERVICES = "kvp_female_family_planning_services";
         String KVP_MAT = "kvp_mat";
         String KVP_VMMC_SERVICES = "kvp_vmmc_services";
         String KVP_TB_INVESTIGATION = "kvp_tb_investigation";
