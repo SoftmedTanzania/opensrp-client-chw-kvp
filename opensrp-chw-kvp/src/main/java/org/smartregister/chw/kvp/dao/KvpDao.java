@@ -385,11 +385,11 @@ public class KvpDao extends AbstractDao {
         return false;
     }
 
-    public static String getPrepEnrollmentDate(String baseEntityId) {
-        String sql = "SELECT prep_enrollment_date FROM ec_prep_register p " +
+    public static String getPrepInitiationDate(String baseEntityId) {
+        String sql = "SELECT prep_initiation_date FROM ec_prep_register p " +
                 " WHERE p.base_entity_id = '" + baseEntityId + "' AND p.is_closed = 0 ";
 
-        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_enrollment_date");
+        DataMap<String> dataMap = cursor -> getCursorValue(cursor, "prep_initiation_date");
 
         List<String> res = readData(sql, dataMap);
         if (res != null && res.size() != 0 && res.get(0) != null) {
